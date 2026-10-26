@@ -1,0 +1,12 @@
+# Compilación (PyInstaller)
+build/
+dist/
+*.spec
+
+# Python
+__pycache__/
+*.pyc
+
+# Archivos de trabajo
+*.zip
+*.tmp
