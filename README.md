@@ -19,12 +19,16 @@ Si Windows muestra "Windows protegió su PC", pulsa "Más información" y luego 
 - Comprueba cada lectura: verde si lo encuentra, amarillo si ya estaba escaneado, rojo si no está en la lista.
 - Sobrantes, deshacer (Ctrl+Z), pegar varios S/N a la vez, buscador y vista grande (F11).
 - Muestra el progreso, el ritmo por minuto y el tiempo estimado.
-- Exporta un reporte Excel coloreado con las hojas Resumen, Escaneos y Sobrantes, y permite reanudarlo después.
+- Copia un S/N pendiente con Ctrl+C o con clic derecho.
+- Exporta un reporte Excel coloreado con las hojas Resumen, Escaneos y Sobrantes, y permite reanudarlo después. Las columnas salen con el ancho justo para cada S/N.
 
 **Crear lista S/N**
-- Arma una lista por pallets, en columnas o en hojas, y la exporta a Excel o CSV.
+- Arma una lista por pallets, en columnas o en hojas, y la exporta a Excel o CSV. Las hojas se renombran con doble clic en su pestaña.
+- **Validar lista:** carga la lista de S/N esperados y solo deja registrar los que están en ella; los demás se avisan en rojo.
 - **Modo Rack:** guía el escaneo ubicación por ubicación (x,y) en racks configurables (DC05-1, DC05-2…).
 - Columnas que se pueden estirar, duplicados marcados en azul e impresión con Ctrl+P.
+
+![Validar lista](docs/validar_lista.png)
 
 ![Modo Rack](docs/modo_rack.png)
 

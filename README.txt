@@ -5,7 +5,7 @@ Contacto: desblackve@gmail.com
 SERIAL NUMBER CHECKER
 =====================
 
-Versión 2.0
+Versión 2.1A
 
 
 1. QUÉ HACE LA APLICACIÓN
@@ -74,14 +74,39 @@ EJEMPLO 5 - Llenar un rack ubicación por ubicación (Modo Rack)
   5. Cuando se llena el rack, la aplicación avisa "Se completó el rack
      DC05-1". Pulsa "Agregar nuevo rack" para seguir con DC05-2.
 
-EJEMPLO 6 - Ver el avance de lejos
+EJEMPLO 6 - Comprobar que cada S/N va en el pallet correcto
+
+  1. En "Crear lista S/N", marca "Validar lista" y pulsa "Cargar lista"
+     para elegir el CSV o Excel con los S/N que deben ir en los pallets.
+  2. Escanea normalmente. Si un S/N no está en esa lista, no se registra
+     y aparece en rojo "S/N NO VÁLIDO PARA EL PALLET".
+  3. El contador indica cuántos llevas y cuántos faltan, por ejemplo
+     "Validados 45 de 60 · faltan 15".
+
+EJEMPLO 7 - Ver el avance de lejos
 
   Pulsa F11 (o "Vista grande"): la pantalla muestra solo el contador y el
   resultado en tamaño enorme. F11 o Esc para volver.
 
 
-3. NOVEDADES DE LA VERSIÓN 2.0
-------------------------------
+3. NOVEDADES
+------------
+
+VERSIÓN 2.1A - Validar lista y nombres de hoja
+
+- Validar lista (Crear lista): solo se registran los S/N de una lista
+  cargada; los demás se avisan en rojo y no entran.
+- Con Validar lista se puede usar también "Alternativas A/B/U".
+- La primera hoja se llama "Pallet 1" y cualquier hoja se puede
+  renombrar con doble clic en su pestaña.
+- Leyenda al pasar el ratón sobre "Modo Rack", "Validar lista" y las
+  pestañas de hojas.
+- Al exportar a Excel, las columnas salen con el ancho justo para el S/N
+  más largo.
+- Checker: copiar el S/N pendiente con Ctrl+C o con clic derecho →
+  "Copiar S/N".
+
+VERSIÓN 2.0 - Diseño nuevo y Modo Rack
 
 - Diseño nuevo: tarjetas oscuras sobre fondo de líneas, botones con
   iconos y barra de título oscura en Windows.
@@ -106,7 +131,7 @@ EJEMPLO 6 - Ver el avance de lejos
   actual / todas las hojas (Crear lista).
 - Crear lista: botón "Nueva hoja", columnas que se pueden estirar y
   tecla Retroceso para eliminar el registro seleccionado.
-- Se reconocen más encabezados de S/N (ver sección 14).
+- Se reconocen más encabezados de S/N (ver sección 15).
 - La sesión se guarda sola: al volver a abrir la aplicación sigues donde
   lo dejaste.
 
@@ -127,7 +152,7 @@ EJEMPLO 6 - Ver el avance de lejos
      puedes pulsar ENTER.
   8. Repite con todos los S/N que quieras comprobar.
   9. Al terminar, pulsa "Exportar reporte".
-  10. Para empezar de cero, usa el botón "Reiniciar" (sección 15).
+  10. Para empezar de cero, usa el botón "Reiniciar" (sección 16).
 
 La casilla "Alternativas A/B/U" de la barra superior activa o desactiva
 la búsqueda alternativa de la sección 5.
@@ -202,6 +227,8 @@ El contador muestra los S/N encontrados respecto al total de S/N únicos:
 - PENDIENTES: los S/N del archivo que faltan por escanear.
 - SOBRANTES: los S/N escaneados que no están en el archivo, con cuántas
   veces se leyeron y la hora de la primera lectura.
+- COPIAR: selecciona un S/N de Pendientes o Sobrantes y pulsa Ctrl+C, o
+  haz clic derecho sobre él y elige "Copiar S/N".
 - BUSCAR: filtra la pestaña abierta mientras escribes. Enter o Esc
   devuelven el cursor al campo de escaneo.
 
@@ -233,6 +260,7 @@ Excel), también preguntará; en ese caso elige "Empezar de cero".
 - Si el archivo cargado es XLSX, el reporte conserva sus hojas.
 - Si es CSV, se crea un XLSX para poder colorear las celdas.
 - Las columnas de S/N se colorean en verde, rojo o azul (sección 6).
+- Las columnas de S/N salen con el ancho justo para el S/N más largo.
 - Se añaden tres hojas:
     Resumen      archivo, totales, encontrados, pendientes, sobrantes y
                  horas de la primera y última lectura.
@@ -261,6 +289,12 @@ texto (sin cambiar mayúsculas ni limitar el largo).
 - "Siguiente pallet" (F2): empieza el pallet siguiente.
 - "Nueva hoja" (junto a las pestañas de hojas): crea una hoja nueva y
   salta a ella.
+- NOMBRE DE LAS HOJAS: la primera se llama "Pallet 1". Doble clic en la
+  pestaña de cualquier hoja para cambiarle el nombre (Enter para
+  guardar, Esc para cancelar). El nombre nuevo se usa al exportar e
+  imprimir.
+- VALIDAR LISTA: comprueba que cada S/N está en una lista cargada
+  (sección 12).
 - VISOR: muestra la hoja tal como se exportará. Clic para seleccionar una
   celda, doble clic para editarla. Las columnas se estiran arrastrando su
   borde en la fila de letras; doble clic en el borde las ajusta al texto.
@@ -269,11 +303,37 @@ texto (sin cambiar mayúsculas ni limitar el largo).
 - ELIMINAR: Retroceso o Supr con el campo vacío, o el botón "Eliminar",
   borra el registro seleccionado. "Deshacer" (Ctrl+Z) lo recupera.
 - EXPORTAR LISTA (Ctrl+E): a Excel (con las mismas hojas y colores del
-  visor) o a CSV (S/N, pallet, hoja, celda y si es duplicado).
+  visor) o a CSV (S/N, pallet, hoja, celda y si es duplicado). En Excel
+  las columnas salen con el ancho justo para el S/N más largo; un CSV no
+  guarda anchos de columna.
 - Un valor que empiece con "=" se guarda como texto, no como fórmula.
 
 
-12. MODO RACK
+12. VALIDAR LISTA
+-----------------
+
+Para asegurarte de que en los pallets solo entran los S/N correctos. Se
+activa con la casilla "Validar lista" en la barra superior del modo
+Crear lista.
+
+- CARGAR LISTA: elige un CSV o Excel con los S/N esperados (se reconocen
+  los mismos encabezados que en Checker, sección 15).
+- SIN LISTA: mientras no cargues una, la aplicación avisa en amarillo y
+  no registra nada de lo que escanees.
+- S/N VÁLIDO: entra en el pallet de forma normal.
+- S/N DUPLICADO: entra en azul, como siempre.
+- S/N QUE NO ESTÁ EN LA LISTA: no se registra y aparece en rojo "S/N NO
+  VÁLIDO PARA EL PALLET", con sonido de error.
+- FALTAN: el contador muestra "Validados X de Y · faltan Z".
+- ALTERNATIVAS A/B/U: con Validar lista activo aparece también esta
+  casilla, con la misma regla que en Checker (sección 5).
+- MODO RACK: el Modo Rack solo coloca máquinas y no valida, así que una
+  opción bloquea a la otra (en gris): con Modo Rack activo no se puede
+  marcar "Validar lista", y con Validar lista activo no se puede marcar
+  "Modo Rack".
+
+
+13. MODO RACK
 -------------
 
 Para guardar equipos en racks, ubicación por ubicación. Se activa con la
@@ -300,7 +360,7 @@ casilla "Modo Rack" en la barra superior del modo Crear lista.
   Posición (x,y), X, Y, S/N y si es duplicado.
 
 
-13. IMPRIMIR Y VISTA GRANDE
+14. IMPRIMIR Y VISTA GRANDE
 ---------------------------
 
 IMPRIMIR (botón "Imprimir" o Ctrl+P): la aplicación pregunta en el aviso
@@ -316,7 +376,7 @@ grande, para verlos de lejos. Se puede seguir escaneando. F11 o Esc para
 volver.
 
 
-14. ARCHIVOS COMPATIBLES Y ENCABEZADOS
+15. ARCHIVOS COMPATIBLES Y ENCABEZADOS
 --------------------------------------
 
 Formatos:
@@ -345,7 +405,7 @@ Reglas de lectura:
 - Los números se leen sin decimales (123456.0 se lee como 123456).
 
 
-15. ATAJOS, REINICIO Y SESIÓN
+16. ATAJOS, REINICIO Y SESIÓN
 -----------------------------
 
 Atajos de teclado:
@@ -355,6 +415,7 @@ Atajos de teclado:
     Ctrl+E       exportar
     Ctrl+P       imprimir
     Ctrl+V       pegar varios S/N
+    Ctrl+C       copiar el S/N seleccionado en Pendientes o Sobrantes
     F11          vista grande
     Esc          quitar el aviso / salir de la vista grande
     F2           siguiente pallet o nuevo rack (Crear lista)
@@ -371,7 +432,7 @@ recuperas el archivo cargado, lo escaneado, los sobrantes y la lista o
 los racks en creación. Aun así, exporta el reporte antes de reiniciar.
 
 
-16. REQUISITOS E INSTALACIÓN
+17. REQUISITOS E INSTALACIÓN
 ----------------------------
 
 EJECUTABLE (recomendado):
@@ -396,12 +457,12 @@ Los sonidos funcionan en Windows. El icono de la aplicación es
 arthur.ico.
 
 
-17. RECOMENDACIONES
+18. RECOMENDACIONES
 -------------------
 
 - Verifica que el archivo cargado sea el correcto.
 - Comprueba que las columnas de S/N tengan un encabezado reconocido
-  (sección 14).
+  (sección 15).
 - Recuerda que se leen todas las hojas de los archivos XLSX.
 - Si un S/N no aparece como encontrado, revisa que esté bien escrito y
   que exista en una columna de S/N.
@@ -410,10 +471,10 @@ arthur.ico.
 - Conserva una copia del archivo original sin modificar.
 
 
-18. CONTACTO
-------------
+19. GitHub
+----------
 
-Proyecto, novedades y descargas en GitHub:
+Proyecto, novedades y descargas:
 
     https://github.com/Desblackve/serial-number-checker
 

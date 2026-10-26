@@ -5,7 +5,7 @@ Contact: desblackve@gmail.com
 SERIAL NUMBER CHECKER
 =====================
 
-Version 2.0
+Version 2.1A
 
 
 1. WHAT THE APP DOES
@@ -75,14 +75,40 @@ EXAMPLE 5 - Fill a rack location by location (Rack mode)
   5. When the rack is full, the app warns "Rack DC05-1 is complete".
      Press "Add new rack" to continue with DC05-2.
 
-EXAMPLE 6 - See the progress from a distance
+EXAMPLE 6 - Check that each S/N goes on the right pallet
+
+  1. In "Create S/N List", tick "Validate list" and press "Load list" to
+     choose the CSV or Excel file with the S/Ns that belong on the
+     pallets.
+  2. Scan as usual. If an S/N is not in that list, it is not recorded and
+     "S/N NOT VALID FOR THE PALLET" appears in red.
+  3. The counter shows how many you have and how many are left, for
+     example "Validated 45 of 60 · 15 left".
+
+EXAMPLE 7 - See the progress from a distance
 
   Press F11 (or "Big view"): the screen shows only the counter and the
   result in a very large size. F11 or Esc to go back.
 
 
-3. WHAT'S NEW IN VERSION 2.0
-----------------------------
+3. WHAT'S NEW
+-------------
+
+VERSION 2.1A - Validate list and sheet names
+
+- Validate list (Create list): only S/Ns from a loaded list are
+  recorded; the others get a red alert and are not added.
+- With Validate list you can also use "A/B/U alternatives".
+- The first sheet is called "Pallet 1" and any sheet can be renamed by
+  double-clicking its tab.
+- A short description appears when you hover over "Rack mode",
+  "Validate list" and the sheet tabs.
+- When exporting to Excel, columns have the exact width for the longest
+  S/N.
+- Checker: copy the pending S/N with Ctrl+C or with right-click → "Copy
+  S/N".
+
+VERSION 2.0 - New design and Rack mode
 
 - New design: dark cards over a line-pattern background, buttons with
   icons and a dark title bar on Windows.
@@ -109,7 +135,7 @@ EXAMPLE 6 - See the progress from a distance
   sheet / all sheets (Create list).
 - Create list: "New sheet" button, columns that can be stretched and the
   Backspace key to delete the selected record.
-- More S/N headers are recognized (see section 14).
+- More S/N headers are recognized (see section 15).
 - The session is saved automatically: when you open the app again you
   continue where you left off.
 
@@ -128,7 +154,7 @@ EXAMPLE 6 - See the progress from a distance
   7. At 17 characters the check is automatic. You can also press ENTER.
   8. Repeat with all the S/Ns you want to check.
   9. When you finish, press "Export report".
-  10. To start from scratch, use the "Reset" button (section 15).
+  10. To start from scratch, use the "Reset" button (section 16).
 
 The "A/B/U alternatives" box in the top bar turns the alternative search
 of section 5 on or off.
@@ -202,6 +228,8 @@ The counter shows the S/Ns found out of the total unique S/Ns:
 - PENDING: the S/Ns in the file that have not been scanned yet.
 - EXTRAS: the scanned S/Ns that are not in the file, with how many times
   they were read and the time of the first read.
+- COPY: select an S/N in Pending or Extras and press Ctrl+C, or
+  right-click it and choose "Copy S/N".
 - SEARCH: filters the open tab as you type. Enter or Esc return the
   cursor to the scan field.
 
@@ -233,6 +261,7 @@ style), it will ask as well; in that case choose "Start from scratch".
 - If the loaded file is XLSX, the report keeps its sheets.
 - If it is CSV, an XLSX is created so the cells can be colored.
 - The S/N columns are colored green, red or blue (section 6).
+- The S/N columns have the exact width for the longest S/N.
 - Three sheets are added:
     Summary      file, totals, found, pending, extras and the times of the
                  first and last read.
@@ -261,6 +290,10 @@ is kept and there is no length limit).
 - "Next pallet" (F2): starts the next pallet.
 - "New sheet" (next to the sheet tabs): creates a new sheet and jumps to
   it.
+- SHEET NAMES: the first one is called "Pallet 1". Double-click the tab
+  of any sheet to rename it (Enter to save, Esc to cancel). The new name
+  is used when exporting and printing.
+- VALIDATE LIST: checks that each S/N is in a loaded list (section 12).
 - VIEWER: shows the sheet exactly as it will be exported. Click to select
   a cell, double-click to edit it. Columns are stretched by dragging
   their border in the letter row; double-click the border to fit the
@@ -271,11 +304,35 @@ is kept and there is no length limit).
   deletes the selected record. "Undo" (Ctrl+Z) brings it back.
 - EXPORT LIST (Ctrl+E): to Excel (with the same sheets and colors as the
   viewer) or to CSV (S/N, pallet, sheet, cell and whether it is a
-  duplicate).
+  duplicate). In Excel the columns have the exact width for the longest
+  S/N; a CSV file does not keep column widths.
 - A value that starts with "=" is saved as text, not as a formula.
 
 
-12. RACK MODE
+12. VALIDATE LIST
+-----------------
+
+To make sure only the right S/Ns go on the pallets. It is turned on with
+the "Validate list" box in the top bar of Create list mode.
+
+- LOAD LIST: choose a CSV or Excel file with the expected S/Ns (the same
+  headers as in Checker are recognized, section 15).
+- NO LIST: until you load one, the app shows a yellow alert and does not
+  record anything you scan.
+- VALID S/N: it goes on the pallet as usual.
+- DUPLICATE S/N: it comes in blue, as always.
+- S/N NOT IN THE LIST: it is not recorded and "S/N NOT VALID FOR THE
+  PALLET" appears in red, with the error sound.
+- LEFT: the counter shows "Validated X of Y · Z left".
+- A/B/U ALTERNATIVES: with Validate list on, this box also appears, with
+  the same rule as in Checker (section 5).
+- RACK MODE: Rack mode only places machines and does not validate, so
+  each option locks the other (grey): while Rack mode is on, "Validate
+  list" cannot be ticked, and while Validate list is on, "Rack mode"
+  cannot be ticked.
+
+
+13. RACK MODE
 -------------
 
 To store items in racks, location by location. It is turned on with the
@@ -303,7 +360,7 @@ To store items in racks, location by location. It is turned on with the
   (x,y), X, Y, S/N and whether it is a duplicate.
 
 
-13. PRINT AND BIG VIEW
+14. PRINT AND BIG VIEW
 ----------------------
 
 PRINT ("Print" button or Ctrl+P): the app asks in the yellow alert what
@@ -318,7 +375,7 @@ BIG VIEW (F11): only the counter and the last result in large size, to
 see them from a distance. You can keep scanning. F11 or Esc to go back.
 
 
-14. SUPPORTED FILES AND HEADERS
+15. SUPPORTED FILES AND HEADERS
 -------------------------------
 
 Formats:
@@ -346,7 +403,7 @@ Reading rules:
 - Numbers are read without decimals (123456.0 is read as 123456).
 
 
-15. SHORTCUTS, RESET AND SESSION
+16. SHORTCUTS, RESET AND SESSION
 --------------------------------
 
 Keyboard shortcuts:
@@ -356,6 +413,7 @@ Keyboard shortcuts:
     Ctrl+E       export
     Ctrl+P       print
     Ctrl+V       paste several S/Ns
+    Ctrl+C       copy the S/N selected in Pending or Extras
     F11          big view
     Esc          dismiss the alert / leave the big view
     F2           next pallet or new rack (Create list)
@@ -373,7 +431,7 @@ and the list or racks being created. Even so, export the report before
 resetting.
 
 
-16. REQUIREMENTS AND INSTALLATION
+17. REQUIREMENTS AND INSTALLATION
 ---------------------------------
 
 EXECUTABLE (recommended):
@@ -396,11 +454,11 @@ FROM THE CODE (optional):
 Sounds work on Windows. The app icon is arthur.ico.
 
 
-17. RECOMMENDATIONS
+18. RECOMMENDATIONS
 -------------------
 
 - Make sure the loaded file is the right one.
-- Check that the S/N columns have a recognized header (section 14).
+- Check that the S/N columns have a recognized header (section 15).
 - Remember that all the sheets of XLSX files are read.
 - If an S/N does not appear as found, check that it is written correctly
   and that it exists in an S/N column.
@@ -409,10 +467,10 @@ Sounds work on Windows. The app icon is arthur.ico.
 - Keep an unmodified copy of the original file.
 
 
-18. CONTACT
------------
+19. GitHub
+----------
 
-Project, updates and downloads on GitHub:
+Project, updates and downloads:
 
     https://github.com/Desblackve/serial-number-checker
 

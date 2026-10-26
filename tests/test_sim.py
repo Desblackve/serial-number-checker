@@ -106,7 +106,7 @@ class Style:
 
 tk = types.ModuleType("tkinter")
 tk.TclError = Exception; tk.END = "end"; tk.INSERT = "insert"
-for n in ("Frame", "Label", "Button", "Checkbutton", "Tk", "Text"): setattr(tk, n, type(n, (Widget,), {}))
+for n in ("Frame", "Label", "Button", "Checkbutton", "Tk", "Text", "Toplevel", "Menu"): setattr(tk, n, type(n, (Widget,), {}))
 tk.Entry = Entry; tk.Canvas = Canvas
 tk.StringVar = Var; tk.BooleanVar = Var
 tk.Misc = type("Misc", (), {"tkraise": staticmethod(lambda w: None)})
@@ -154,7 +154,7 @@ check("pallet 1 creado sin diálogos", len(app.pallets) == 1 and app.pallets[0][
 app.next_pallet()
 for s in ["B1", "B2"]: scan(app, s)
 lay = m.compute_layout(app.create_items, app.pallets)
-cells = lay["sheets"]["Lista"]["cells"]
+cells = lay["sheets"]["Pallet 1"]["cells"]
 check("col A empieza en A1 (no en B)", cells[(1, 1)]["text"] == "Pallet 1" and cells[(2, 1)]["text"] == "A1")
 check("col B pallet 2", cells[(1, 2)]["text"] == "Pallet 2" and cells[(3, 2)]["text"] == "B2")
 check("contador = únicos", app.counter.text == "5")
@@ -166,7 +166,7 @@ check("contador sin cambio con duplicado", app.counter.text == "5")
 check("contador amarillo", app.counter.cfg["bg"] == m.YELLOW_BG)
 check("banner visible", app.banner_visible and "A2" in app.banner_label.text)
 check("sonido de duplicado", m.winsound.MB_ICONEXCLAMATION in beeps)
-check("celda azul en visor", any(c["kind"] == "dup" for c in app.layout["sheets"]["Lista"]["cells"].values()))
+check("celda azul en visor", any(c["kind"] == "dup" for c in app.layout["sheets"]["Pallet 1"]["cells"].values()))
 
 # seguir escaneando mantiene amarillo
 scan(app, "Z9")
@@ -215,18 +215,18 @@ check("hoja nueva", "Mi hoja" in lay["sheets"] and lay["sheets"]["Mi hoja"]["cel
 app.dest_index = 2; app.sheet_grid.selected = None
 app.next_pallet()
 check("celda sin selección avisa", app.status_key == "select_cell_first")
-app.sheet_grid.selected = (4, 3); app.view_sheet = "Lista"
+app.sheet_grid.selected = (4, 3); app.view_sheet = "Pallet 1"
 app.next_pallet(); scan(app, "C1"); scan(app, "C2")
 lay = m.compute_layout(app.create_items, app.pallets)
-check("desde celda C4", lay["sheets"]["Lista"]["cells"][(4, 3)]["text"] == "C1" and lay["sheets"]["Lista"]["cells"][(5, 3)]["text"] == "C2")
+check("desde celda C4", lay["sheets"]["Pallet 1"]["cells"][(4, 3)]["text"] == "C1" and lay["sheets"]["Pallet 1"]["cells"][(5, 3)]["text"] == "C2")
 
 # exportar XLSX
 out = os.path.join(TMP, "lista.xlsx")
 fd.asksaveasfilename = lambda **k: out
 app.export_create_list()
 wb = openpyxl.load_workbook(out)
-check("XLSX exportado con hojas", set(wb.sheetnames) == {"Lista", "Mi hoja"}, wb.sheetnames)
-ws = wb["Lista"]
+check("XLSX exportado con hojas", set(wb.sheetnames) == {"Pallet 1", "Mi hoja"}, wb.sheetnames)
+ws = wb["Pallet 1"]
 check("export = visor (A1/A2)", ws["A1"].value == "Pallet 1" and ws["A2"].value == "A1")
 check("dup en azul en export", any(c.fill.fill_type == "solid" and c.fill.fgColor.rgb.endswith("BDD7EE") for r in ws.iter_rows() for c in r))
 check("status export ok", app.status_key == "list_exported")
@@ -404,7 +404,7 @@ check("Nueva hoja salta a ella", app10.view_sheet == "Extra", app10.view_sheet)
 scan(app10, "N2")
 lay = m.compute_layout(app10.create_items, app10.pallets)
 check("lo escaneado va a la hoja nueva", lay["sheets"]["Extra"]["cells"][(2, 1)]["text"] == "N2")
-app10.show_sheet("Lista"); app10.sheet_grid.selected = (2, 1)
+app10.show_sheet("Pallet 1"); app10.sheet_grid.selected = (2, 1)
 app10.entry.s = ""; app10._last_backspace = 0
 app10.on_backspace()
 check("Retroceso con campo vacío elimina", [i["serial"] for i in app10.create_items] == ["N2"])
@@ -414,13 +414,13 @@ check("Retroceso mantenido no borra (repetición)", len(app10.create_items) == 2
 app10.entry.s = "abc"; app10._last_backspace = 0
 check("Retroceso con texto borra letras, no registros", app10.on_backspace() is None and len(app10.create_items) == 2)
 app10.entry.s = ""
-app10.col_widths.setdefault("Lista", {})[1] = 300
+app10.col_widths.setdefault("Pallet 1", {})[1] = 300
 app10.save_sessions(); app11 = new_app()
-check("anchos de columna en la sesión", app11.col_widths.get("Lista", {}).get(1) == 300, app11.col_widths)
+check("anchos de columna en la sesión", app11.col_widths.get("Pallet 1", {}).get(1) == 300, app11.col_widths)
 out5 = os.path.join(TMP, "anchos.xlsx"); fd.asksaveasfilename = lambda **k: out5
 app11.export_create_list()
 wb = openpyxl.load_workbook(out5)
-check("Excel usa el ancho del visor", abs(wb["Lista"].column_dimensions["A"].width - 300 / 7) < 0.01)
+check("Excel usa el ancho del visor", abs(wb["Pallet 1"].column_dimensions["A"].width - 300 / 7) < 0.01)
 
 # ---------- 7. Modo Rack ----------
 app12 = new_app(); app12.set_mode("create"); app12.reset_app(); app12.reset_app()
@@ -496,13 +496,98 @@ for lang, name in (("es", "README.txt"), ("en", "README_EN.txt"), ("pt", "README
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", name)
     check(f"README {lang} incrustado = {name}", m.README_TEXTS[lang] == open(path, encoding="utf-8").read())
 blocks = m.SerialNumberChecker.readme_blocks(m.README_TEXTS["es"])
-check("README: título y secciones", blocks[2] == ("title", "SERIAL NUMBER CHECKER") and ("h2", "12. MODO RACK") in blocks, blocks[:4])
+check("README: título y secciones", blocks[2] == ("title", "SERIAL NUMBER CHECKER") and ("h2", "12. VALIDAR LISTA") in blocks and ("h2", "13. MODO RACK") in blocks and ("h2", "19. GitHub") in blocks and ("h3", "VERSIÓN 2.1A - Validar lista y nombres de hoja") in blocks, blocks[:4])
 check("README: creador en su línea", blocks[0] == ("body", 'Creador: Desblack "Dess"'), blocks[0])
 check("README: tablas intactas", any(s == "mono" and "Ctrl+P" in v for s, v in blocks))
 app6.toggle_readme()
 check("README abre", app6.readme_open)
 app6.on_escape()
 check("Esc cierra el README", not app6.readme_open)
+
+# ---------- 10. Versión 2.1A ----------
+# Validar lista
+lista = os.path.join(TMP, "validar.xlsx")
+wbv = openpyxl.Workbook(); wsv = wbv.active; wsv.append(["S/N"])
+for v in ["VAL0000001AAAAAA1", "VAL0000002AAAAAA2", "VAL0000003AAAAAA3", "VAL000A004AAAAAA4"]: wsv.append([v])
+wbv.save(lista)
+app14 = new_app(); app14.set_mode("create"); app14.reset_app(); app14.reset_app()
+app14.rack_mode_var.set(False); app14.on_rack_toggle()
+app14.validate_var.set(True); app14.on_validate_toggle()
+check("validar: aviso sin lista", app14.banner_visible and app14.t("validate_banner") in app14.banner_label.text)
+scan(app14, "VAL0000001AAAAAA1")
+check("validar: sin lista no registra", not app14.create_items and app14.status_key == "validate_need_list")
+fd.askopenfilename = lambda **k: lista
+app14.load_validation_list()
+check("validar: lista cargada", len(app14.valid_set) == 4 and app14.status_key == "validate_loaded" and not app14.banner_visible)
+scan(app14, "val0000001aaaaaa1")
+check("validar: válido entra (como en la lista)", [i["serial"] for i in app14.create_items] == ["VAL0000001AAAAAA1"])
+scan(app14, "NOESTA00000000000")
+check("validar: no válido no entra y avisa en rojo", len(app14.create_items) == 1 and app14.status_key == "validate_invalid" and m.STATUS_KINDS["validate_invalid"] == "error")
+scan(app14, "VAL0000001AAAAAA1")
+check("validar: duplicado entra en azul", app14.create_items[-1]["dup"] and app14.status_key == "duplicate_warning")
+scan(app14, "VAL0009004AAAAAA4")
+check("validar: alternativa A/B/U", app14.create_items[-1]["serial"] == "VAL000A004AAAAAA4", app14.create_items[-1]["serial"])
+app14.valid_alt_var.set(False); scan(app14, "VAL0009004AAAAAA4")
+check("validar: sin A/B/U no acepta variante", app14.status_key == "validate_invalid")
+check("validar: faltan", "Validados 2 de 4 · faltan 2" in app14.counter_info.text, app14.counter_info.text)
+app14.root.clipboard_get = lambda: "VAL0000002AAAAAA2\nMALO\nVAL0000003AAAAAA3"
+app14.on_paste()
+check("validar: pegar resume", app14.status_key == "paste_validated" and app14.status_params["added"] == 2 and app14.status_params["invalid"] == 1, app14.status_params)
+app14.rack_mode_var.set(True); app14.on_rack_toggle()
+check("Modo Rack desmarca y bloquea Validar lista", not app14.validate_var.get() and not app14.validate_check.enabled and app14.valid_set)
+app14.validate_check._toggle()
+check("Validar lista bloqueada no se marca", not app14.validate_var.get())
+app14.rack_mode_var.set(False); app14.on_rack_toggle()
+check("sin Modo Rack se puede volver a marcar", app14.validate_check.enabled)
+app14.validate_check._toggle()
+check("la lista cargada se conserva", app14.validate_var.get() and len(app14.valid_set) == 4)
+check("con Validar lista, Modo Rack bloqueado", not app14.rack_check.enabled)
+app14.rack_check._toggle()
+check("Modo Rack bloqueado no se marca", not app14.rack_mode_var.get())
+app14.save_sessions(); app15 = new_app()
+check("sesión: validar lista", app15.validate_var.get() and len(app15.valid_set) == 4 and app15.valid_path == lista)
+
+# Hojas: Pallet 1 y renombrar
+app16 = new_app(); app16.set_mode("create"); app16.reset_app(); app16.reset_app(); app16.validate_var.set(False); app16.on_validate_toggle()
+scan(app16, "H1")
+check("la primera hoja se llama Pallet 1", app16.view_sheet == "Pallet 1" and "Pallet 1" in app16.layout["sheets"])
+app16.col_widths["Pallet 1"] = {1: 222}
+check("renombrar hoja principal", app16.rename_sheet("Pallet 1", "Zona A") and app16.view_sheet == "Zona A" and app16.col_widths.get("Zona A") == {1: 222})
+app16.pallet_name_var.set("B"); app16.new_sheet(); scan(app16, "H2")
+check("renombrar hoja de pallet", app16.rename_sheet("B", "Pasillo 2") and "Pasillo 2" in app16.layout["sheets"])
+check("nombre repetido se rechaza", not app16.rename_sheet("Pasillo 2", "zona a") and app16.status_key == "sheet_name_taken")
+check("caracteres no válidos se quitan", app16.rename_sheet("Pasillo 2", "P/2:*") and "P2" in app16.layout["sheets"])
+out7 = os.path.join(TMP, "renombrada.xlsx"); fd.asksaveasfilename = lambda **k: out7
+app16.export_create_list()
+check("export con nombres nuevos", openpyxl.load_workbook(out7).sheetnames == ["Zona A", "P2"])
+app16.save_sessions(); app17 = new_app()
+check("sesión: nombres de hoja", app17.default_sheet == "Zona A" and "P2" in app17.layout["sheets"])
+
+# Sesión de la 2.0 (hoja "Lista")
+old = json.load(open(app17.session_file, encoding="utf-8"))
+del old["create"]["default_sheet"]; old["view_sheet"] = "Lista"; old["create"]["col_widths"] = {"Lista": {"1": 180}}
+json.dump(old, open(app17.session_file, "w", encoding="utf-8"))
+app18 = new_app()
+check("sesión 2.0: Lista pasa a Pallet 1", app18.default_sheet == "Pallet 1" and app18.col_widths.get("Pallet 1") == {1: 180})
+
+# Anchos justos al exportar
+wsr = openpyxl.load_workbook(out3)["H1"]
+check("reporte: columna S/N al ancho justo", wsr.column_dimensions["A"].width == len("ABCDEF1GHJKLMNPQR") + 2, wsr.column_dimensions["A"].width)
+wsl = openpyxl.load_workbook(out7)["P2"]
+check("lista: ancho justo", wsl.column_dimensions["A"].width == 6, wsl.column_dimensions["A"].width)
+
+# Copiar S/N pendiente
+app6.set_list_tab("pending")
+copied = []
+app6.root.clipboard_clear = lambda: copied.clear()
+app6.root.clipboard_append = lambda v: copied.append(v)
+first = next(iter(app6.pending_tree.rows))
+app6.pending_tree.selection = lambda: (first,)
+app6.pending_tree.item = lambda iid, option=None: app6.pending_tree.rows[iid]
+app6.entry.selection_present = lambda: False
+check("Ctrl+C copia el S/N pendiente", app6.on_copy() == "break" and copied == [app6.pending_tree.rows[first][0]] and app6.status_key == "copied")
+app6.entry.selection_present = lambda: True
+check("Ctrl+C con texto seleccionado copia el texto", app6.on_copy() is None)
 
 print("\nFALLOS:", fails if fails else "ninguno")
 sys.exit(1 if fails else 0)

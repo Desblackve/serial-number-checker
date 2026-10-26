@@ -43,7 +43,8 @@ SCAN_LOG_LIMIT = 50000
 RATE_WINDOW_S = 600
 BACKSPACE_REPEAT_S = 0.5
 
-DEFAULT_SHEET = "Lista"
+DEFAULT_SHEET = "Pallet 1"
+OLD_DEFAULT_SHEET = "Lista"  # nombre en la versión 2.0 (sesiones antiguas)
 RACK_ROWS = 6
 RACK_COLS = 8
 RACK_MAX = 99
@@ -128,6 +129,13 @@ STATUS_KINDS = {
     "rack_need_location": "warn",
     "rack_bad_size": "warn",
     "rack_target": "info",
+    "validate_need_list": "warn",
+    "validate_invalid": "error",
+    "validate_loaded": "ok",
+    "paste_validated": "info",
+    "sheet_renamed": "info",
+    "sheet_name_taken": "warn",
+    "copied": "info",
     "print_sent": "ok",
     "print_error": "error",
     "print_unavailable": "warn",
@@ -375,6 +383,28 @@ TEXTS = {
         "keys_checker": (
             "F11|vista grande;Ctrl+Z|deshacer;Ctrl+E|exportar;Esc|quitar aviso"
         ),
+        "validate_mode": "Validar lista",
+        "validate_load": "Cargar lista",
+        "validate_off": "Desactivar",
+        "validate_select": "Seleccionar la lista de S/N esperados",
+        "validate_banner": "Validar lista está activo: carga el CSV o Excel con los S/N esperados para empezar a escanear.",
+        "validate_need_list": "Primero carga la lista de validación.",
+        "validate_invalid": "S/N NO VÁLIDO PARA EL PALLET — {serial}",
+        "validate_invalid_detail": "No está en la lista de validación: no se registró.",
+        "validate_loaded": "Lista de validación cargada: {name} · {count} S/N",
+        "validate_count": "Validados {done} de {total} · faltan {left}",
+        "validate_no_list": "Sin lista de validación",
+        "validate_file": "Lista: {name}",
+        "paste_validated": "Pegados {total}: {added} registrados · {invalid} no válidos · {duplicates} duplicados",
+        "sheet_renamed": "Hoja renombrada: {old} → {new}",
+        "sheet_name_taken": "Ya existe una hoja llamada «{name}».",
+        "tip_rack": "Escaneo guiado por ubicaciones (x,y) de un rack. Cada S/N se guarda en la siguiente posición libre y la app avisa cuando el rack se llena.",
+        "tip_validate": "Carga un CSV o Excel con los S/N esperados. Los que no estén en la lista no se registran y se avisa en rojo; los repetidos entran en azul. Sin lista cargada no se puede escanear.",
+        "tip_rack_locked": "Modo Rack no disponible durante la validación de S/N en pallets.",
+        "tip_validate_locked": "Validar S/N no disponible mientras Modo Rack esté activo.",
+        "tip_tab": "Doble clic para cambiar el nombre de la hoja.",
+        "copy_sn": "Copiar S/N",
+        "copied": "S/N copiado: {serial}",
         "keys_rack": (
             "F2|nuevo rack;Retroceso|eliminar;Ctrl+Z|deshacer;Ctrl+E|exportar;"
             "Esc|quitar aviso"
@@ -588,6 +618,28 @@ TEXTS = {
         "keys_checker": (
             "F11|big view;Ctrl+Z|undo;Ctrl+E|export;Esc|dismiss alert"
         ),
+        "validate_mode": "Validate list",
+        "validate_load": "Load list",
+        "validate_off": "Turn off",
+        "validate_select": "Select the list of expected S/Ns",
+        "validate_banner": "Validate list is on: load the CSV or Excel file with the expected S/Ns to start scanning.",
+        "validate_need_list": "Load the validation list first.",
+        "validate_invalid": "S/N NOT VALID FOR THE PALLET — {serial}",
+        "validate_invalid_detail": "It is not in the validation list: it was not recorded.",
+        "validate_loaded": "Validation list loaded: {name} · {count} S/Ns",
+        "validate_count": "Validated {done} of {total} · {left} left",
+        "validate_no_list": "No validation list",
+        "validate_file": "List: {name}",
+        "paste_validated": "Pasted {total}: {added} recorded · {invalid} not valid · {duplicates} duplicates",
+        "sheet_renamed": "Sheet renamed: {old} → {new}",
+        "sheet_name_taken": "There is already a sheet called “{name}”.",
+        "tip_rack": "Scanning guided by the (x,y) locations of a rack. Each S/N is saved in the next free position and the app warns when the rack is full.",
+        "tip_validate": "Load a CSV or Excel file with the expected S/Ns. Those not in the list are not recorded and a red alert is shown; repeated ones come in blue. Without a loaded list you cannot scan.",
+        "tip_rack_locked": "Rack mode is not available while validating S/Ns on pallets.",
+        "tip_validate_locked": "S/N validation is not available while Rack mode is on.",
+        "tip_tab": "Double-click to rename the sheet.",
+        "copy_sn": "Copy S/N",
+        "copied": "S/N copied: {serial}",
         "keys_rack": (
             "F2|new rack;Backspace|delete;Ctrl+Z|undo;Ctrl+E|export;"
             "Esc|dismiss alert"
@@ -803,6 +855,28 @@ TEXTS = {
             "F11|visão ampliada;Ctrl+Z|desfazer;Ctrl+E|exportar;"
             "Esc|ocultar aviso"
         ),
+        "validate_mode": "Validar lista",
+        "validate_load": "Carregar lista",
+        "validate_off": "Desativar",
+        "validate_select": "Selecionar a lista de S/N esperados",
+        "validate_banner": "Validar lista está ativo: carregue o CSV ou Excel com os S/N esperados para começar a escanear.",
+        "validate_need_list": "Carregue primeiro a lista de validação.",
+        "validate_invalid": "S/N NÃO VÁLIDO PARA O PALLET — {serial}",
+        "validate_invalid_detail": "Não está na lista de validação: não foi registrado.",
+        "validate_loaded": "Lista de validação carregada: {name} · {count} S/N",
+        "validate_count": "Validados {done} de {total} · faltam {left}",
+        "validate_no_list": "Sem lista de validação",
+        "validate_file": "Lista: {name}",
+        "paste_validated": "Colados {total}: {added} registrados · {invalid} não válidos · {duplicates} duplicados",
+        "sheet_renamed": "Planilha renomeada: {old} → {new}",
+        "sheet_name_taken": "Já existe uma planilha chamada «{name}».",
+        "tip_rack": "Leitura guiada pelas posições (x,y) de um rack. Cada S/N é salvo na próxima posição livre e o aplicativo avisa quando o rack fica cheio.",
+        "tip_validate": "Carregue um CSV ou Excel com os S/N esperados. Os que não estiverem na lista não são registrados e aparece um aviso em vermelho; os repetidos entram em azul. Sem lista carregada não é possível escanear.",
+        "tip_rack_locked": "Modo Rack indisponível durante a validação de S/N nos pallets.",
+        "tip_validate_locked": "Validar S/N indisponível enquanto o Modo Rack estiver ativo.",
+        "tip_tab": "Clique duas vezes para renomear a planilha.",
+        "copy_sn": "Copiar S/N",
+        "copied": "S/N copiado: {serial}",
         "keys_rack": (
             "F2|novo rack;Backspace|excluir;Ctrl+Z|desfazer;Ctrl+E|exportar;"
             "Esc|ocultar aviso"
@@ -896,11 +970,34 @@ def safe_sheet_name(name, used):
     return candidate
 
 
-def compute_layout(items, pallets):
+def autofit_columns(worksheet, columns=None, minimum=4, padding=2, maximum=90):
+    """Ancho de cada columna justo para su texto más largo (más un margen).
+
+    Así el archivo se ve completo en Excel o Google Sheets sin ajustar las
+    columnas a mano. columns: solo esas columnas (números desde 1).
+    """
+    lengths = {}
+
+    for row in worksheet.iter_rows():
+        for cell in row:
+            if cell.value is None or (columns and cell.column not in columns):
+                continue
+
+            length = max(len(line) for line in str(cell.value).split("\n"))
+            lengths[cell.column] = max(lengths.get(cell.column, 0), length)
+
+    for column, length in lengths.items():
+        worksheet.column_dimensions[column_letter(column)].width = min(
+            max(length + padding, minimum), maximum,
+        )
+
+
+def compute_layout(items, pallets, default_sheet=DEFAULT_SHEET):
     """Calcula en qué hoja, fila y columna queda cada registro.
 
     Es la misma función para el visor y para exportar, así lo que se ve
-    es exactamente lo que se guarda.
+    es exactamente lo que se guarda. default_sheet es el nombre de la hoja
+    principal (el usuario la puede renombrar).
 
     items:   [{"serial", "pallet", "dup", "slot"?}]
     pallets: [{"number", "mode", "name", "sheet", "cell",
@@ -917,7 +1014,7 @@ def compute_layout(items, pallets):
     sheets = OrderedDict()
     positions = {}
     pallet_sheets = {}
-    used = {DEFAULT_SHEET.lower()}
+    used = {default_sheet.lower()}
     next_column = {}
 
     def get_sheet(name):
@@ -978,7 +1075,7 @@ def compute_layout(items, pallets):
                 row += 1
 
         elif mode == "cell":
-            sheet_name = pallet.get("sheet") or DEFAULT_SHEET
+            sheet_name = pallet.get("sheet") or default_sheet
             start = parse_cell(pallet.get("cell", "A1")) or (1, 1)
             row, col = start
             sheet = get_sheet(sheet_name)
@@ -992,7 +1089,7 @@ def compute_layout(items, pallets):
                 row += 1
 
         else:
-            sheet_name = DEFAULT_SHEET
+            sheet_name = default_sheet
             sheet = get_sheet(sheet_name)
             col = next_column.get(sheet_name, 1)
 
@@ -1473,27 +1570,49 @@ class CheckBox(tk.Frame):
             self, width=18, height=18, bg=bg, highlightthickness=0, bd=0,
         )
         self.box.pack(side="left")
+        self.label_color = WHITE
         self.label = tk.Label(self, text="", font=ui(10), bg=bg, fg=WHITE)
         self.label.pack(side="left", padx=(8, 0))
+
+        self.parts = (self.box, self.label)
 
         for widget in (self, self.box, self.label):
             widget.bind("<Button-1>", self._toggle)
 
         self.redraw()
 
+    enabled = True
+
     def _toggle(self, event=None):
+        if not self.enabled:
+            return
+
         self.variable.set(not self.variable.get())
         self.redraw()
 
         if self.command:
             self.command()
 
+    def set_enabled(self, enabled):
+        """Bloqueada: se ve en gris y no se puede marcar."""
+        self.enabled = enabled
+        self.config(cursor="hand2" if enabled else "arrow")
+        self.label.config(fg=self.label_color if enabled else DIM)
+        self.redraw()
+
     def redraw(self):
-        on = bool(self.variable.get())
+        on = bool(self.variable.get()) and self.enabled
         self.box.delete("all")
+
+        if not self.enabled:
+            fill, outline = CONTROL, BORDER
+        else:
+            fill = BLUE if on else FIELD
+            outline = BLUE if on else BORDER_STRONG
+
         self.box.create_polygon(
             *round_rect_points(1, 1, 17, 17, 5), smooth=True,
-            fill=BLUE if on else FIELD, outline=BLUE if on else BORDER_STRONG,
+            fill=fill, outline=outline,
         )
 
         if on:
@@ -1501,6 +1620,100 @@ class CheckBox(tk.Frame):
 
     def set_text(self, text):
         self.label.config(text=text)
+
+
+class Tooltip:
+    """Leyenda corta al dejar el ratón sobre un control.
+
+    Aparece tras medio segundo y desaparece al alejar el ratón. No toma el
+    foco: el escáner sigue escribiendo en el campo de escaneo.
+    """
+
+    DELAY_MS = 500
+
+    def __init__(self, widget, text_func):
+        self.widget = widget
+        self.text_func = text_func
+        self.job = None
+        self.tip = None
+
+        parts = getattr(widget, "parts", ())
+        parts = list(parts) if isinstance(parts, (list, tuple)) else []
+
+        for part in [widget] + parts:
+            part.bind("<Enter>", self._schedule, add="+")
+            part.bind("<Leave>", self._leave, add="+")
+            part.bind("<ButtonPress>", self._hide, add="+")
+
+    def _schedule(self, event=None):
+        self._cancel()
+        self.job = self.widget.after(self.DELAY_MS, self._show)
+
+    def _cancel(self):
+        if self.job is not None:
+            try:
+                self.widget.after_cancel(self.job)
+            except Exception:
+                pass
+
+            self.job = None
+
+    def _leave(self, event=None):
+        # Pasar de la casilla a su texto también es "salir": solo se oculta
+        # si el ratón ya no está encima del control.
+        try:
+            x, y = self.widget.winfo_pointerxy()
+            left, top = self.widget.winfo_rootx(), self.widget.winfo_rooty()
+            inside = (
+                left <= x < left + self.widget.winfo_width()
+                and top <= y < top + self.widget.winfo_height()
+            )
+        except Exception:
+            inside = False
+
+        if not inside:
+            self._hide()
+
+    def _show(self):
+        self.job = None
+
+        if self.tip is not None:
+            return
+
+        text = self.text_func()
+
+        if not text:
+            return
+
+        tip = tk.Toplevel(self.widget)
+        tip.wm_overrideredirect(True)
+
+        try:
+            tip.attributes("-topmost", True)
+        except Exception:
+            pass
+
+        frame = tk.Frame(tip, bg=BORDER_STRONG, padx=1, pady=1)
+        frame.pack()
+        tk.Label(
+            frame, text=text, font=ui(9), bg=CONTROL, fg=WHITE,
+            justify="left", wraplength=320, padx=10, pady=7,
+        ).pack()
+        x = self.widget.winfo_rootx()
+        y = self.widget.winfo_rooty() + self.widget.winfo_height() + 6
+        tip.wm_geometry(f"+{x}+{y}")
+        self.tip = tip
+
+    def _hide(self, event=None):
+        self._cancel()
+
+        if self.tip is not None:
+            try:
+                self.tip.destroy()
+            except Exception:
+                pass
+
+            self.tip = None
 
 
 class ProgressBar(tk.Canvas):
@@ -2194,6 +2407,12 @@ class SerialNumberChecker:
         self.pallet_name_var = tk.StringVar(value="")
         self.search_var = tk.StringVar(value="")
         self.rack_mode_var = tk.BooleanVar(value=False)
+        self.validate_var = tk.BooleanVar(value=False)
+        self.valid_alt_var = tk.BooleanVar(value=True)
+        self.valid_order = []
+        self.valid_set = set()
+        self.valid_path = None
+        self._rename_entry = None
         self.rack_location_var = tk.StringVar(value="")
         self.rack_rows_var = tk.StringVar(value=str(RACK_ROWS))
         self.rack_cols_var = tk.StringVar(value=str(RACK_COLS))
@@ -2229,6 +2448,7 @@ class SerialNumberChecker:
         self.pallet_counter = 0
         self.dest_index = 0
         self.undo_stack = []
+        self.default_sheet = DEFAULT_SHEET
         self.view_sheet = DEFAULT_SHEET
         self.drawn_sheet = None
         self.sheet_tab_names = None
@@ -2534,6 +2754,22 @@ class SerialNumberChecker:
         self.rack_check = CheckBox(
             body, self.rack_mode_var, command=self.on_rack_toggle,
         )
+        self.validate_check = CheckBox(
+            body, self.validate_var, command=self.on_validate_toggle,
+        )
+        Tooltip(
+            self.rack_check,
+            lambda: self.t(
+                "tip_rack_locked" if self.validation_active() else "tip_rack"
+            ),
+        )
+        Tooltip(
+            self.validate_check,
+            lambda: self.t(
+                "tip_validate_locked" if self.rack_mode_var.get()
+                else "tip_validate"
+            ),
+        )
 
         self.language_menu = ttk.Combobox(
             body,
@@ -2732,6 +2968,20 @@ class SerialNumberChecker:
             command=self.ask_print,
         )
         self.print_list_button.pack(side="left")
+
+        # Validar lista: fila propia con el archivo y las alternativas A/B/U.
+        self.validate_row = tk.Frame(body, bg=PANEL)
+        self.load_valid_button = RoundButton(
+            self.validate_row, icon="file", size=9, height=32, padx=12,
+            command=self.load_validation_list,
+        )
+        self.load_valid_button.pack(side="left", padx=(0, 10))
+        self.valid_file_label = self._label(self.validate_row, 9, fg=MUTED)
+        self.valid_file_label.pack(side="left", padx=(0, 18))
+        self.valid_alt_check = CheckBox(
+            self.validate_row, self.valid_alt_var, command=self.on_alt_toggle,
+        )
+        self.valid_alt_check.pack(side="left")
 
     # ----- contador -----
 
@@ -3006,6 +3256,15 @@ class SerialNumberChecker:
         self.pending_tree.tag_configure("odd", background="#171a20")
         self.pending_tree.tag_configure("muted", foreground=MUTED)
         self.pending_tree.bind("<<TreeviewSelect>>", lambda e: self.focus_entry())
+        # Copiar el S/N: clic derecho → "Copiar S/N", o Ctrl+C con la fila
+        # seleccionada (el foco vuelve al escaneo, ver on_copy).
+        self.pending_tree.bind("<Button-3>", self.show_copy_menu)
+        self.pending_tree.bind("<Control-c>", self.copy_selected_serial)
+        self.copy_menu = tk.Menu(
+            self.root, tearoff=0, bg=CONTROL, fg=WHITE, bd=0,
+            activebackground=BLUE, activeforeground="#ffffff", font=ui(10),
+        )
+        self.copy_menu.add_command(label="", command=self.copy_selected_serial)
 
         pending_scroll = ttk.Scrollbar(
             tree_frame, orient="vertical",
@@ -3320,7 +3579,7 @@ class SerialNumberChecker:
                 # Línea cortada al ancho del .txt: sigue el mismo párrafo.
                 style, value = blocks[-1]
                 blocks[-1] = (style, value + " " + stripped)
-            elif re.match(r"^[A-ZÁÉÍÓÚÑÇ0-9 ]+ - ", stripped):
+            elif re.match(r"^[A-ZÁÉÍÓÚÑÇ0-9 .]+ - ", stripped):
                 blocks.append(("h3", stripped))
             else:
                 blocks.append(("body", stripped))
@@ -3381,6 +3640,7 @@ class SerialNumberChecker:
         self.entry.bind("<Delete>", self.on_entry_delete)
         self.entry.bind("<BackSpace>", self.on_backspace)
         self.entry.bind("<<Paste>>", self.on_paste)
+        self.entry.bind("<<Copy>>", self.on_copy)
         self.root.bind("<F2>", self.on_next_pallet_key)
         self.root.bind("<F11>", self.toggle_big_view)
         self.root.bind("<Control-z>", self.on_undo_key)
@@ -3432,6 +3692,18 @@ class SerialNumberChecker:
         self.export_list_button.config(text=t("export_list"))
         self.rack_check.set_text(t("rack_mode"))
         self.rack_check.redraw()
+        self.validate_check.set_text(t("validate_mode"))
+        # Una bloquea a la otra: Modo Rack solo coloca máquinas y no valida.
+        self.validate_check.set_enabled(not self.rack_mode_var.get())
+        self.rack_check.set_enabled(not self.validation_active())
+        self.valid_alt_check.set_text(t("alt_match"))
+        self.valid_alt_check.redraw()
+        self.load_valid_button.config(text=t("validate_load"))
+        self.valid_file_label.config(
+            text=t("validate_file", name=os.path.basename(self.valid_path))
+            if self.valid_path else t("validate_no_list"),
+            fg=WHITE if self.valid_path else YELLOW_TEXT,
+        )
         self.rack_location_label.config(text=t("rack_location"))
         self.rack_rows_label.config(text=t("rack_rows"))
         self.rack_cols_label.config(text=t("rack_cols"))
@@ -3499,6 +3771,8 @@ class SerialNumberChecker:
         self.create_legend.pack_forget()
         self.alt_matching_check.pack_forget()
         self.rack_check.pack_forget()
+        self.validate_check.pack_forget()
+        self.validate_row.pack_forget()
         self.pallet_row.pack_forget()
         self.rack_row.pack_forget()
 
@@ -3516,6 +3790,10 @@ class SerialNumberChecker:
             self._put(self.sheet_card, 5, 0, 3)
             self.create_legend.pack(fill="x")
             self.rack_check.pack(side="left", padx=(18, 0))
+            self.validate_check.pack(side="left", padx=(18, 0))
+
+            if self.validation_active():
+                self.validate_row.pack(fill="x", pady=(12, 0))
             row = self.rack_row if self.rack_mode_var.get() else self.pallet_row
             row.pack(fill="x", before=self.create_row_two)
             self.progress.pack_forget()
@@ -3800,6 +4078,15 @@ class SerialNumberChecker:
                 ),
                 (self.t("resume_continue"), self.resume_continue),
                 (self.t("resume_fresh"), self.resume_fresh),
+            )
+        elif (
+            self.mode == "create" and self.validation_active()
+            and not self.valid_set
+        ):
+            self.show_banner(
+                self.t("validate_banner"),
+                (self.t("validate_load"), self.load_validation_list),
+                (self.t("validate_off"), self.turn_off_validation),
             )
         elif self.mode == "create" and self.rack_full_pending():
             pallet = self.rack_full_pending()
@@ -4207,6 +4494,7 @@ class SerialNumberChecker:
 
                 active_sn_columns = set()
                 sheet_values = None
+                sn_columns = set()
 
                 if (
                     values_workbook is not None
@@ -4224,6 +4512,7 @@ class SerialNumberChecker:
 
                     if header_indices:
                         active_sn_columns = header_indices
+                        sn_columns |= {index + 1 for index in header_indices}
                         continue
 
                     for index in active_sn_columns:
@@ -4251,6 +4540,9 @@ class SerialNumberChecker:
                             )
 
                         colored_cells += 1
+
+                if sn_columns:
+                    autofit_columns(worksheet, columns=sn_columns)
 
             self._add_report_sheets(workbook)
             workbook.save(output_path)
@@ -4296,10 +4588,6 @@ class SerialNumberChecker:
                 if header:
                     cell.font = bold
 
-        def set_widths(sheet, widths):
-            for index, width in enumerate(widths, start=1):
-                sheet.column_dimensions[column_letter(index)].width = width
-
         # Un reporte reanudado ya trae estas hojas: se reemplazan.
         for name in list(workbook.sheetnames):
             if name.lower() in REPORT_SHEETS:
@@ -4311,7 +4599,7 @@ class SerialNumberChecker:
             add_row(summary, [label, value])
             summary.cell(row=summary.max_row, column=1).font = bold
 
-        set_widths(summary, [34, 40])
+        autofit_columns(summary)
 
         log = workbook.create_sheet(t("sheet_log"))
         add_row(log, t("log_headers").split("|"), header=True)
@@ -4319,7 +4607,7 @@ class SerialNumberChecker:
         for seconds, read, kind, match in self.scan_log:
             add_row(log, [stamp(seconds), read, t("hist_" + kind), match])
 
-        set_widths(log, [20, 26, 16, 26])
+        autofit_columns(log)
 
         if self.extras:
             extras = workbook.create_sheet(t("sheet_extras"))
@@ -4328,7 +4616,7 @@ class SerialNumberChecker:
             for serial, entry in self.extras.items():
                 add_row(extras, [serial, entry["count"], stamp(entry["first"])])
 
-            set_widths(extras, [26, 10, 20])
+            autofit_columns(extras)
 
     def summary_rows(self):
         """Filas (etiqueta, valor) del resumen del Checker."""
@@ -4424,8 +4712,7 @@ class SerialNumberChecker:
                 add(sheet, [label, value])
                 sheet.cell(row=sheet.max_row, column=1).font = bold
 
-            sheet.column_dimensions["A"].width = 34
-            sheet.column_dimensions["B"].width = 40
+            autofit_columns(sheet)
 
         if "pending" in choices:
             sheet = new_sheet(t("print_pending"))
@@ -4434,7 +4721,7 @@ class SerialNumberChecker:
             for number, serial in enumerate(self.pending_list(), start=1):
                 add(sheet, [number, serial])
 
-            sheet.column_dimensions["B"].width = 30
+            autofit_columns(sheet)
 
         if "extras" in choices:
             sheet = new_sheet(t("sheet_extras"))
@@ -4446,7 +4733,7 @@ class SerialNumberChecker:
                     time.strftime("%H:%M:%S", time.localtime(entry["first"])),
                 ])
 
-            sheet.column_dimensions["A"].width = 30
+            autofit_columns(sheet)
 
         return workbook
 
@@ -4808,6 +5095,7 @@ class SerialNumberChecker:
         self.batch = True
         kinds = []
         duplicates_before = self.dup_count()
+        items_before = len(self.create_items)
 
         try:
             for value in values:
@@ -4829,6 +5117,15 @@ class SerialNumberChecker:
                 found=sum(k in ("exact", "variant") for k in kinds),
                 missing=sum(k in ("not_found", "bad_format") for k in kinds),
                 repeated=kinds.count("repeated"),
+            )
+        elif self.validation_active():
+            added = len(self.create_items) - items_before
+            self.set_status(
+                "paste_validated",
+                total=len(values),
+                added=added,
+                invalid=len(values) - added,
+                duplicates=self.dup_count() - duplicates_before,
             )
         else:
             self.set_status(
@@ -4963,6 +5260,67 @@ class SerialNumberChecker:
                 values=(empty_text, "", ""),
             )
 
+    # ----- copiar S/N de las listas -----
+
+    def selected_list_serial(self):
+        """S/N de la fila seleccionada en Pendientes / Sobrantes (o None)."""
+        try:
+            selection = self.pending_tree.selection()
+        except Exception:
+            return None
+
+        if not isinstance(selection, (list, tuple)) or not selection:
+            return None
+
+        iid = selection[0]
+
+        if iid in ("none", "more"):
+            return None
+
+        values = self.pending_tree.item(iid, "values")
+        return str(values[0]) if values else None
+
+    def copy_selected_serial(self, event=None):
+        serial = self.selected_list_serial()
+
+        if serial:
+            self.root.clipboard_clear()
+            self.root.clipboard_append(serial)
+            self.set_status("copied", serial=serial)
+
+        self.focus_entry()
+        return "break"
+
+    def on_copy(self, event=None):
+        """Ctrl+C en el campo de escaneo: si no hay texto seleccionado ahí,
+        copia el S/N seleccionado en la lista."""
+        try:
+            if self.entry.selection_present():
+                return None
+        except Exception:
+            pass
+
+        if self.mode == "checker" and self.selected_list_serial():
+            return self.copy_selected_serial()
+
+        return None
+
+    def show_copy_menu(self, event):
+        row = self.pending_tree.identify_row(event.y)
+
+        if not row or row in ("none", "more"):
+            return "break"
+
+        self.pending_tree.selection_set(row)
+        self.copy_menu.entryconfigure(0, label=self.t("copy_sn"))
+
+        try:
+            self.copy_menu.tk_popup(event.x_root, event.y_root)
+        finally:
+            self.copy_menu.grab_release()
+
+        return "break"
+
     def mark_pending_found(self, serial):
         self.update_list_tabs()
 
@@ -5069,7 +5427,7 @@ class SerialNumberChecker:
 
     def _show_pallet_sheet(self, pallet):
         """Lleva el visor a la hoja del pallet (si tiene una propia)."""
-        layout = compute_layout(self.create_items, self.pallets)
+        layout = compute_layout(self.create_items, self.pallets, self.default_sheet)
         sheet = layout["pallet_sheets"].get(pallet["number"])
 
         if sheet:
@@ -5154,6 +5512,33 @@ class SerialNumberChecker:
             self.add_rack_item(value)
             return
 
+        if self.validation_active():
+            if not self.valid_set:
+                # Aviso 1: sin lista cargada no se registra nada.
+                self.entry.delete(0, tk.END)
+                self.set_status("validate_need_list")
+                self.play_sound(False)
+                self.refresh_banner()
+                self.focus_entry()
+                return
+
+            match = self.match_valid(value)
+
+            if match is None:
+                # Aviso 2: no está en la lista, no se registra.
+                self.entry.delete(0, tk.END)
+                self._cancel_flash()
+                self.set_status(
+                    "validate_invalid", serial=value,
+                    _details=[("validate_invalid_detail", {})],
+                )
+                self.flash(RED)
+                self.play_sound(False)
+                self.focus_entry()
+                return
+
+            value = match
+
         self._ensure_pallet()
         pallet = self.pallets[-1]
 
@@ -5175,6 +5560,95 @@ class SerialNumberChecker:
         self.refresh_create_view(focus_index=len(self.create_items) - 1)
         self.schedule_save()
         self.focus_entry()
+
+    # ----- Validar lista -----
+
+    def validation_active(self):
+        """Validar lista marcada (nunca en Modo Rack: ahí solo se colocan
+        máquinas y no se valida)."""
+        return bool(self.validate_var.get()) and not self.rack_mode_var.get()
+
+    def on_validate_toggle(self):
+        self.update_mode_view()
+        self.schedule_save()
+        self.focus_entry()
+
+    def turn_off_validation(self):
+        self.validate_var.set(False)
+        self.on_validate_toggle()
+
+    def load_validation_list(self):
+        """Carga el CSV o Excel con los S/N esperados en los pallets."""
+        path = filedialog.askopenfilename(
+            title=self.t("validate_select"),
+            filetypes=[
+                (self.t("file_types"), "*.csv *.xlsx"),
+                (self.t("csv_files"), "*.csv"),
+                (self.t("excel_files"), "*.xlsx"),
+                (self.t("all_files"), "*.*"),
+            ],
+        )
+
+        if not path:
+            self.focus_entry()
+            return
+
+        extension = os.path.splitext(path)[1].lower()
+
+        try:
+            if extension == ".csv":
+                values, _done, _where = self.read_csv(path)
+            elif extension == ".xlsx":
+                values, _done, _where = self.read_excel(path)
+            else:
+                self.set_status("unsupported")
+                self.focus_entry()
+                return
+        except Exception as exc:
+            self.set_status("read_error", error=str(exc)[:200])
+            self.focus_entry()
+            return
+
+        if not values:
+            self.set_status("no_serials")
+            self.focus_entry()
+            return
+
+        self.valid_order = list(OrderedDict.fromkeys(values))
+        self.valid_set = set(self.valid_order)
+        self.valid_path = path
+        self.set_status(
+            "validate_loaded", name=os.path.basename(path),
+            count=len(self.valid_set),
+        )
+        self.update_language()
+        self.refresh_create_view()
+        self.schedule_save()
+        self.focus_entry()
+
+    def match_valid(self, value):
+        """S/N de la lista que corresponde a lo leído, o None.
+
+        Igual que en Checker: exacto y, si está marcado, con el 7.º
+        carácter cambiado por A, B o U.
+        """
+        text = self.normalize_serial(value)
+
+        if text in self.valid_set:
+            return text
+
+        if self.valid_alt_var.get() and len(text) >= 7:
+            for replacement in ("A", "B", "U"):
+                candidate = text[:6] + replacement + text[7:]
+
+                if candidate in self.valid_set:
+                    return candidate
+
+        return None
+
+    def validated_count(self):
+        scanned = {self.normalize_serial(item["serial"]) for item in self.create_items}
+        return len(self.valid_set & scanned)
 
     # ----- Modo Rack -----
 
@@ -5397,6 +5871,9 @@ class SerialNumberChecker:
             )
 
     def on_rack_toggle(self):
+        if self.rack_mode_var.get():
+            self.validate_var.set(False)
+
         self.update_mode_view()
         self.schedule_save()
         self.focus_entry()
@@ -5619,22 +6096,29 @@ class SerialNumberChecker:
             return
 
         active = self.pallets[-1] if self.pallets else None
-
-        self.counter_info.config(
-            text=self.t(
-                "create_count",
-                pallet=active["number"] if active else "-",
-                pallet_count=(
-                    self.pallet_count(active["number"]) if active else 0
-                ),
-                count=len(self.create_seen),
-                duplicates=self.dup_count(),
-            )
+        text = self.t(
+            "create_count",
+            pallet=active["number"] if active else "-",
+            pallet_count=self.pallet_count(active["number"]) if active else 0,
+            count=len(self.create_seen),
+            duplicates=self.dup_count(),
         )
+
+        if self.validation_active():
+            if self.valid_set:
+                done = self.validated_count()
+                text += "\n" + self.t(
+                    "validate_count", done=done, total=len(self.valid_set),
+                    left=len(self.valid_set) - done,
+                )
+            else:
+                text += "\n" + self.t("validate_no_list")
+
+        self.counter_info.config(text=text)
 
     def refresh_create_view(self, focus_index=None):
         """Recalcula el diseño y actualiza el visor de la hoja."""
-        self.layout = compute_layout(self.create_items, self.pallets)
+        self.layout = compute_layout(self.create_items, self.pallets, self.default_sheet)
         sheets = self.layout["sheets"]
         positions = self.layout["positions"]
 
@@ -5644,7 +6128,7 @@ class SerialNumberChecker:
         ]
 
         if not names:
-            names = [DEFAULT_SHEET]
+            names = [self.default_sheet]
 
         if focus_index is not None and focus_index in positions:
             self.view_sheet = positions[focus_index][0]
@@ -5720,6 +6204,11 @@ class SerialNumberChecker:
                 command=lambda n=name: self.show_sheet(n),
             )
             button.pack(side="left", padx=(0, 4))
+            button.bind(
+                "<Double-Button-1>",
+                lambda e, n=name, b=button: self.begin_rename_sheet(n, b),
+            )
+            Tooltip(button, lambda: self.t("tip_tab"))
             self.sheet_tab_buttons.append(button)
 
         add = RoundButton(
@@ -5729,6 +6218,97 @@ class SerialNumberChecker:
         )
         add.pack(side="left", padx=(6, 0))
         self.sheet_tab_buttons.append(add)
+
+    def begin_rename_sheet(self, name, button):
+        """Doble clic en una pestaña: se escribe el nombre nuevo ahí mismo."""
+        self._close_rename()
+        entry = tk.Entry(
+            self.sheet_tabs, font=ui(9), bg=FIELD, fg=WHITE,
+            insertbackground=WHITE, relief="flat", bd=0,
+            highlightthickness=1, highlightbackground=BLUE_LIGHT,
+            highlightcolor=BLUE_LIGHT, width=max(len(name) + 4, 14),
+        )
+        entry.insert(0, name)
+        entry.select_range(0, tk.END)
+        entry.place(in_=button, x=0, y=0, relheight=1)
+        entry.bind("<Return>", lambda e: self.finish_rename(name))
+        entry.bind("<KP_Enter>", lambda e: self.finish_rename(name))
+        entry.bind("<Escape>", lambda e: self._cancel_rename())
+        entry.bind("<FocusOut>", lambda e: self.finish_rename(name))
+        self._rename_entry = entry
+        # El clic que soltó el doble clic devuelve el foco al escaneo: se
+        # espera un momento antes de dárselo al nombre.
+        self.root.after(
+            80, lambda: entry.winfo_exists() and entry.focus_set(),
+        )
+        return "break"
+
+    def _close_rename(self):
+        entry = self._rename_entry
+        self._rename_entry = None
+
+        if entry is not None:
+            try:
+                entry.destroy()
+            except tk.TclError:
+                pass
+
+    def _cancel_rename(self):
+        self._close_rename()
+        self.focus_entry()
+        return "break"
+
+    def finish_rename(self, old):
+        if self._rename_entry is None:
+            return "break"
+
+        new = self._rename_entry.get()
+        self._close_rename()
+        self.rename_sheet(old, new)
+        self.focus_entry()
+        return "break"
+
+    def rename_sheet(self, old, new):
+        """Cambia el nombre de una hoja (se usa también al exportar)."""
+        new = "".join(ch for ch in str(new) if ch not in "[]:*?/\\").strip()[:31]
+
+        if not new or new == old:
+            return False
+
+        names = list(self.layout["sheets"]) or [self.default_sheet]
+
+        if new.lower() in {name.lower() for name in names if name != old}:
+            self.set_status("sheet_name_taken", name=new)
+            return False
+
+        if old == self.default_sheet:
+            self.default_sheet = new
+        else:
+            for number, sheet in self.layout["pallet_sheets"].items():
+                pallet = next(
+                    (p for p in self.pallets if p["number"] == number), None,
+                )
+
+                if sheet == old and pallet and pallet["mode"] in ("sheet", "rack"):
+                    pallet["name"] = new
+
+        # Pallets que empiezan en una celda de esa hoja.
+        for pallet in self.pallets:
+            if pallet.get("sheet") == old:
+                pallet["sheet"] = new
+
+        if old in self.col_widths:
+            self.col_widths[new] = self.col_widths.pop(old)
+
+        if self.view_sheet == old:
+            self.view_sheet = new
+            self.drawn_sheet = new
+
+        self.sheet_tab_names = None
+        self.set_status("sheet_renamed", old=old, new=new)
+        self.refresh_create_view()
+        self.schedule_save()
+        return True
 
     def show_sheet(self, name):
         self.view_sheet = name
@@ -5744,7 +6324,9 @@ class SerialNumberChecker:
             }
 
         self.refresh_create_view()
-        self.focus_entry()
+
+        if self._rename_entry is None:
+            self.focus_entry()
 
     def on_columns_resized(self):
         self.schedule_save()
@@ -5757,7 +6339,7 @@ class SerialNumberChecker:
         Los racks se dibujan como cuadrícula con sus coordenadas y, si se
         exportan todos, se añade la hoja con la lista de ubicaciones.
         """
-        layout = compute_layout(self.create_items, self.pallets)
+        layout = compute_layout(self.create_items, self.pallets, self.default_sheet)
         workbook = Workbook()
         blue_fill = PatternFill(fill_type="solid", fgColor="BDD7EE")
         first = True
@@ -5799,7 +6381,7 @@ class SerialNumberChecker:
                     # Mismo ancho que en el visor (≈ 7 píxeles por carácter).
                     width = custom[col] / 7
                 else:
-                    width = min(max(width + 2, 10), 60)
+                    width = min(max(width + 2, 6), 90)
 
                 worksheet.column_dimensions[column_letter(col)].width = width
 
@@ -5829,7 +6411,11 @@ class SerialNumberChecker:
             cell.fill = head_fill
             cell.alignment = center
             cell.border = border
-            worksheet.column_dimensions[column_letter(x + 2)].width = 22
+            longest = max(
+                [len(info["text"]) for (row, col), info in sheet["cells"].items()
+                 if col == x + 1] or [6],
+            )
+            worksheet.column_dimensions[column_letter(x + 2)].width = longest + 2
 
         for y in range(rack["rows"]):
             cell = worksheet.cell(row=y + 2, column=1, value=y)
@@ -5853,7 +6439,7 @@ class SerialNumberChecker:
 
             worksheet.row_dimensions[y + 2].height = 28
 
-        worksheet.column_dimensions["A"].width = max(10, len(name) + 2)
+        worksheet.column_dimensions["A"].width = max(6, len(name) + 2)
 
         # Sin las letras y números propios de Excel (ni en pantalla ni al
         # imprimir): solo se ven las coordenadas del rack, desde 0.
@@ -5901,8 +6487,7 @@ class SerialNumberChecker:
                     if isinstance(cell.value, str):
                         cell.data_type = "s"
 
-        for index, width in enumerate([14, 14, 14, 6, 6, 26, 11], start=1):
-            worksheet.column_dimensions[column_letter(index)].width = width
+        autofit_columns(worksheet)
 
     def export_create_list(self):
         if not self.create_items:
@@ -5920,7 +6505,7 @@ class SerialNumberChecker:
             self.focus_entry()
             return
 
-        layout = compute_layout(self.create_items, self.pallets)
+        layout = compute_layout(self.create_items, self.pallets, self.default_sheet)
         duplicates = self.dup_count()
 
         try:
@@ -6045,8 +6630,12 @@ class SerialNumberChecker:
         self.pallets = []
         self.pallet_counter = 0
         self.undo_stack = []
+        self.default_sheet = DEFAULT_SHEET
         self.view_sheet = DEFAULT_SHEET
         self.dup_dismissed_at = 0
+        self.valid_order = []
+        self.valid_set = set()
+        self.valid_path = None
 
     def reset_app(self):
         """Reinicia solo la sesión del modo activo.
@@ -6137,6 +6726,11 @@ class SerialNumberChecker:
                 "rack_cols": self.rack_cols_var.get(),
                 "rack_order": self.rack_order,
                 "rack_cursor": self.rack_cursor,
+                "default_sheet": self.default_sheet,
+                "validate": bool(self.validate_var.get()),
+                "valid_alt": bool(self.valid_alt_var.get()),
+                "valid_path": self.valid_path,
+                "valid_list": self.valid_order,
                 "col_widths": {
                     sheet: {str(col): width for col, width in widths.items()}
                     for sheet, widths in self.col_widths.items() if widths
@@ -6330,6 +6924,28 @@ class SerialNumberChecker:
             self._recompute_dups()
 
             self.rack_mode_var.set(bool(create.get("rack_mode")))
+            default = create.get("default_sheet")
+
+            if isinstance(default, str) and default.strip():
+                self.default_sheet = default.strip()[:31]
+            else:
+                # Sesión de la 2.0: la hoja principal se llamaba "Lista".
+                for pallet in self.pallets:
+                    if pallet.get("sheet") == OLD_DEFAULT_SHEET:
+                        pallet["sheet"] = DEFAULT_SHEET
+
+                if self.view_sheet == OLD_DEFAULT_SHEET:
+                    self.view_sheet = DEFAULT_SHEET
+
+            self.validate_var.set(bool(create.get("validate")))
+            self.valid_alt_var.set(bool(create.get("valid_alt", True)))
+            self.valid_order = [
+                str(v) for v in create.get("valid_list") or []
+                if isinstance(v, str) and v
+            ]
+            self.valid_set = set(self.valid_order)
+            path = create.get("valid_path")
+            self.valid_path = path if isinstance(path, str) and self.valid_set else None
             self.rack_location_var.set(str(create.get("rack_location") or ""))
             self.rack_rows_var.set(str(create.get("rack_rows") or RACK_ROWS))
             self.rack_cols_var.set(str(create.get("rack_cols") or RACK_COLS))
@@ -6346,6 +6962,9 @@ class SerialNumberChecker:
 
             for sheet, widths in (create.get("col_widths") or {}).items():
                 if isinstance(widths, dict):
+                    if sheet == OLD_DEFAULT_SHEET and "default_sheet" not in create:
+                        sheet = DEFAULT_SHEET
+
                     self.col_widths[str(sheet)] = {
                         int(col): int(width) for col, width in widths.items()
                         if str(col).isdigit() and isinstance(width, int)
@@ -7092,7 +7711,7 @@ Contacto: desblackve@gmail.com
 SERIAL NUMBER CHECKER
 =====================
 
-Versión 2.0
+Versión 2.1A
 
 
 1. QUÉ HACE LA APLICACIÓN
@@ -7161,14 +7780,39 @@ EJEMPLO 5 - Llenar un rack ubicación por ubicación (Modo Rack)
   5. Cuando se llena el rack, la aplicación avisa "Se completó el rack
      DC05-1". Pulsa "Agregar nuevo rack" para seguir con DC05-2.
 
-EJEMPLO 6 - Ver el avance de lejos
+EJEMPLO 6 - Comprobar que cada S/N va en el pallet correcto
+
+  1. En "Crear lista S/N", marca "Validar lista" y pulsa "Cargar lista"
+     para elegir el CSV o Excel con los S/N que deben ir en los pallets.
+  2. Escanea normalmente. Si un S/N no está en esa lista, no se registra
+     y aparece en rojo "S/N NO VÁLIDO PARA EL PALLET".
+  3. El contador indica cuántos llevas y cuántos faltan, por ejemplo
+     "Validados 45 de 60 · faltan 15".
+
+EJEMPLO 7 - Ver el avance de lejos
 
   Pulsa F11 (o "Vista grande"): la pantalla muestra solo el contador y el
   resultado en tamaño enorme. F11 o Esc para volver.
 
 
-3. NOVEDADES DE LA VERSIÓN 2.0
-------------------------------
+3. NOVEDADES
+------------
+
+VERSIÓN 2.1A - Validar lista y nombres de hoja
+
+- Validar lista (Crear lista): solo se registran los S/N de una lista
+  cargada; los demás se avisan en rojo y no entran.
+- Con Validar lista se puede usar también "Alternativas A/B/U".
+- La primera hoja se llama "Pallet 1" y cualquier hoja se puede
+  renombrar con doble clic en su pestaña.
+- Leyenda al pasar el ratón sobre "Modo Rack", "Validar lista" y las
+  pestañas de hojas.
+- Al exportar a Excel, las columnas salen con el ancho justo para el S/N
+  más largo.
+- Checker: copiar el S/N pendiente con Ctrl+C o con clic derecho →
+  "Copiar S/N".
+
+VERSIÓN 2.0 - Diseño nuevo y Modo Rack
 
 - Diseño nuevo: tarjetas oscuras sobre fondo de líneas, botones con
   iconos y barra de título oscura en Windows.
@@ -7193,7 +7837,7 @@ EJEMPLO 6 - Ver el avance de lejos
   actual / todas las hojas (Crear lista).
 - Crear lista: botón "Nueva hoja", columnas que se pueden estirar y
   tecla Retroceso para eliminar el registro seleccionado.
-- Se reconocen más encabezados de S/N (ver sección 14).
+- Se reconocen más encabezados de S/N (ver sección 15).
 - La sesión se guarda sola: al volver a abrir la aplicación sigues donde
   lo dejaste.
 
@@ -7214,7 +7858,7 @@ EJEMPLO 6 - Ver el avance de lejos
      puedes pulsar ENTER.
   8. Repite con todos los S/N que quieras comprobar.
   9. Al terminar, pulsa "Exportar reporte".
-  10. Para empezar de cero, usa el botón "Reiniciar" (sección 15).
+  10. Para empezar de cero, usa el botón "Reiniciar" (sección 16).
 
 La casilla "Alternativas A/B/U" de la barra superior activa o desactiva
 la búsqueda alternativa de la sección 5.
@@ -7289,6 +7933,8 @@ El contador muestra los S/N encontrados respecto al total de S/N únicos:
 - PENDIENTES: los S/N del archivo que faltan por escanear.
 - SOBRANTES: los S/N escaneados que no están en el archivo, con cuántas
   veces se leyeron y la hora de la primera lectura.
+- COPIAR: selecciona un S/N de Pendientes o Sobrantes y pulsa Ctrl+C, o
+  haz clic derecho sobre él y elige "Copiar S/N".
 - BUSCAR: filtra la pestaña abierta mientras escribes. Enter o Esc
   devuelven el cursor al campo de escaneo.
 
@@ -7320,6 +7966,7 @@ Excel), también preguntará; en ese caso elige "Empezar de cero".
 - Si el archivo cargado es XLSX, el reporte conserva sus hojas.
 - Si es CSV, se crea un XLSX para poder colorear las celdas.
 - Las columnas de S/N se colorean en verde, rojo o azul (sección 6).
+- Las columnas de S/N salen con el ancho justo para el S/N más largo.
 - Se añaden tres hojas:
     Resumen      archivo, totales, encontrados, pendientes, sobrantes y
                  horas de la primera y última lectura.
@@ -7348,6 +7995,12 @@ texto (sin cambiar mayúsculas ni limitar el largo).
 - "Siguiente pallet" (F2): empieza el pallet siguiente.
 - "Nueva hoja" (junto a las pestañas de hojas): crea una hoja nueva y
   salta a ella.
+- NOMBRE DE LAS HOJAS: la primera se llama "Pallet 1". Doble clic en la
+  pestaña de cualquier hoja para cambiarle el nombre (Enter para
+  guardar, Esc para cancelar). El nombre nuevo se usa al exportar e
+  imprimir.
+- VALIDAR LISTA: comprueba que cada S/N está en una lista cargada
+  (sección 12).
 - VISOR: muestra la hoja tal como se exportará. Clic para seleccionar una
   celda, doble clic para editarla. Las columnas se estiran arrastrando su
   borde en la fila de letras; doble clic en el borde las ajusta al texto.
@@ -7356,11 +8009,37 @@ texto (sin cambiar mayúsculas ni limitar el largo).
 - ELIMINAR: Retroceso o Supr con el campo vacío, o el botón "Eliminar",
   borra el registro seleccionado. "Deshacer" (Ctrl+Z) lo recupera.
 - EXPORTAR LISTA (Ctrl+E): a Excel (con las mismas hojas y colores del
-  visor) o a CSV (S/N, pallet, hoja, celda y si es duplicado).
+  visor) o a CSV (S/N, pallet, hoja, celda y si es duplicado). En Excel
+  las columnas salen con el ancho justo para el S/N más largo; un CSV no
+  guarda anchos de columna.
 - Un valor que empiece con "=" se guarda como texto, no como fórmula.
 
 
-12. MODO RACK
+12. VALIDAR LISTA
+-----------------
+
+Para asegurarte de que en los pallets solo entran los S/N correctos. Se
+activa con la casilla "Validar lista" en la barra superior del modo
+Crear lista.
+
+- CARGAR LISTA: elige un CSV o Excel con los S/N esperados (se reconocen
+  los mismos encabezados que en Checker, sección 15).
+- SIN LISTA: mientras no cargues una, la aplicación avisa en amarillo y
+  no registra nada de lo que escanees.
+- S/N VÁLIDO: entra en el pallet de forma normal.
+- S/N DUPLICADO: entra en azul, como siempre.
+- S/N QUE NO ESTÁ EN LA LISTA: no se registra y aparece en rojo "S/N NO
+  VÁLIDO PARA EL PALLET", con sonido de error.
+- FALTAN: el contador muestra "Validados X de Y · faltan Z".
+- ALTERNATIVAS A/B/U: con Validar lista activo aparece también esta
+  casilla, con la misma regla que en Checker (sección 5).
+- MODO RACK: el Modo Rack solo coloca máquinas y no valida, así que una
+  opción bloquea a la otra (en gris): con Modo Rack activo no se puede
+  marcar "Validar lista", y con Validar lista activo no se puede marcar
+  "Modo Rack".
+
+
+13. MODO RACK
 -------------
 
 Para guardar equipos en racks, ubicación por ubicación. Se activa con la
@@ -7387,7 +8066,7 @@ casilla "Modo Rack" en la barra superior del modo Crear lista.
   Posición (x,y), X, Y, S/N y si es duplicado.
 
 
-13. IMPRIMIR Y VISTA GRANDE
+14. IMPRIMIR Y VISTA GRANDE
 ---------------------------
 
 IMPRIMIR (botón "Imprimir" o Ctrl+P): la aplicación pregunta en el aviso
@@ -7403,7 +8082,7 @@ grande, para verlos de lejos. Se puede seguir escaneando. F11 o Esc para
 volver.
 
 
-14. ARCHIVOS COMPATIBLES Y ENCABEZADOS
+15. ARCHIVOS COMPATIBLES Y ENCABEZADOS
 --------------------------------------
 
 Formatos:
@@ -7432,7 +8111,7 @@ Reglas de lectura:
 - Los números se leen sin decimales (123456.0 se lee como 123456).
 
 
-15. ATAJOS, REINICIO Y SESIÓN
+16. ATAJOS, REINICIO Y SESIÓN
 -----------------------------
 
 Atajos de teclado:
@@ -7442,6 +8121,7 @@ Atajos de teclado:
     Ctrl+E       exportar
     Ctrl+P       imprimir
     Ctrl+V       pegar varios S/N
+    Ctrl+C       copiar el S/N seleccionado en Pendientes o Sobrantes
     F11          vista grande
     Esc          quitar el aviso / salir de la vista grande
     F2           siguiente pallet o nuevo rack (Crear lista)
@@ -7458,7 +8138,7 @@ recuperas el archivo cargado, lo escaneado, los sobrantes y la lista o
 los racks en creación. Aun así, exporta el reporte antes de reiniciar.
 
 
-16. REQUISITOS E INSTALACIÓN
+17. REQUISITOS E INSTALACIÓN
 ----------------------------
 
 EJECUTABLE (recomendado):
@@ -7483,12 +8163,12 @@ Los sonidos funcionan en Windows. El icono de la aplicación es
 arthur.ico.
 
 
-17. RECOMENDACIONES
+18. RECOMENDACIONES
 -------------------
 
 - Verifica que el archivo cargado sea el correcto.
 - Comprueba que las columnas de S/N tengan un encabezado reconocido
-  (sección 14).
+  (sección 15).
 - Recuerda que se leen todas las hojas de los archivos XLSX.
 - Si un S/N no aparece como encontrado, revisa que esté bien escrito y
   que exista en una columna de S/N.
@@ -7497,10 +8177,10 @@ arthur.ico.
 - Conserva una copia del archivo original sin modificar.
 
 
-18. CONTACTO
-------------
+19. GitHub
+----------
 
-Proyecto, novedades y descargas en GitHub:
+Proyecto, novedades y descargas:
 
     https://github.com/Desblackve/serial-number-checker
 
@@ -7514,7 +8194,7 @@ Contact: desblackve@gmail.com
 SERIAL NUMBER CHECKER
 =====================
 
-Version 2.0
+Version 2.1A
 
 
 1. WHAT THE APP DOES
@@ -7584,14 +8264,40 @@ EXAMPLE 5 - Fill a rack location by location (Rack mode)
   5. When the rack is full, the app warns "Rack DC05-1 is complete".
      Press "Add new rack" to continue with DC05-2.
 
-EXAMPLE 6 - See the progress from a distance
+EXAMPLE 6 - Check that each S/N goes on the right pallet
+
+  1. In "Create S/N List", tick "Validate list" and press "Load list" to
+     choose the CSV or Excel file with the S/Ns that belong on the
+     pallets.
+  2. Scan as usual. If an S/N is not in that list, it is not recorded and
+     "S/N NOT VALID FOR THE PALLET" appears in red.
+  3. The counter shows how many you have and how many are left, for
+     example "Validated 45 of 60 · 15 left".
+
+EXAMPLE 7 - See the progress from a distance
 
   Press F11 (or "Big view"): the screen shows only the counter and the
   result in a very large size. F11 or Esc to go back.
 
 
-3. WHAT'S NEW IN VERSION 2.0
-----------------------------
+3. WHAT'S NEW
+-------------
+
+VERSION 2.1A - Validate list and sheet names
+
+- Validate list (Create list): only S/Ns from a loaded list are
+  recorded; the others get a red alert and are not added.
+- With Validate list you can also use "A/B/U alternatives".
+- The first sheet is called "Pallet 1" and any sheet can be renamed by
+  double-clicking its tab.
+- A short description appears when you hover over "Rack mode",
+  "Validate list" and the sheet tabs.
+- When exporting to Excel, columns have the exact width for the longest
+  S/N.
+- Checker: copy the pending S/N with Ctrl+C or with right-click → "Copy
+  S/N".
+
+VERSION 2.0 - New design and Rack mode
 
 - New design: dark cards over a line-pattern background, buttons with
   icons and a dark title bar on Windows.
@@ -7618,7 +8324,7 @@ EXAMPLE 6 - See the progress from a distance
   sheet / all sheets (Create list).
 - Create list: "New sheet" button, columns that can be stretched and the
   Backspace key to delete the selected record.
-- More S/N headers are recognized (see section 14).
+- More S/N headers are recognized (see section 15).
 - The session is saved automatically: when you open the app again you
   continue where you left off.
 
@@ -7637,7 +8343,7 @@ EXAMPLE 6 - See the progress from a distance
   7. At 17 characters the check is automatic. You can also press ENTER.
   8. Repeat with all the S/Ns you want to check.
   9. When you finish, press "Export report".
-  10. To start from scratch, use the "Reset" button (section 15).
+  10. To start from scratch, use the "Reset" button (section 16).
 
 The "A/B/U alternatives" box in the top bar turns the alternative search
 of section 5 on or off.
@@ -7711,6 +8417,8 @@ The counter shows the S/Ns found out of the total unique S/Ns:
 - PENDING: the S/Ns in the file that have not been scanned yet.
 - EXTRAS: the scanned S/Ns that are not in the file, with how many times
   they were read and the time of the first read.
+- COPY: select an S/N in Pending or Extras and press Ctrl+C, or
+  right-click it and choose "Copy S/N".
 - SEARCH: filters the open tab as you type. Enter or Esc return the
   cursor to the scan field.
 
@@ -7742,6 +8450,7 @@ style), it will ask as well; in that case choose "Start from scratch".
 - If the loaded file is XLSX, the report keeps its sheets.
 - If it is CSV, an XLSX is created so the cells can be colored.
 - The S/N columns are colored green, red or blue (section 6).
+- The S/N columns have the exact width for the longest S/N.
 - Three sheets are added:
     Summary      file, totals, found, pending, extras and the times of the
                  first and last read.
@@ -7770,6 +8479,10 @@ is kept and there is no length limit).
 - "Next pallet" (F2): starts the next pallet.
 - "New sheet" (next to the sheet tabs): creates a new sheet and jumps to
   it.
+- SHEET NAMES: the first one is called "Pallet 1". Double-click the tab
+  of any sheet to rename it (Enter to save, Esc to cancel). The new name
+  is used when exporting and printing.
+- VALIDATE LIST: checks that each S/N is in a loaded list (section 12).
 - VIEWER: shows the sheet exactly as it will be exported. Click to select
   a cell, double-click to edit it. Columns are stretched by dragging
   their border in the letter row; double-click the border to fit the
@@ -7780,11 +8493,35 @@ is kept and there is no length limit).
   deletes the selected record. "Undo" (Ctrl+Z) brings it back.
 - EXPORT LIST (Ctrl+E): to Excel (with the same sheets and colors as the
   viewer) or to CSV (S/N, pallet, sheet, cell and whether it is a
-  duplicate).
+  duplicate). In Excel the columns have the exact width for the longest
+  S/N; a CSV file does not keep column widths.
 - A value that starts with "=" is saved as text, not as a formula.
 
 
-12. RACK MODE
+12. VALIDATE LIST
+-----------------
+
+To make sure only the right S/Ns go on the pallets. It is turned on with
+the "Validate list" box in the top bar of Create list mode.
+
+- LOAD LIST: choose a CSV or Excel file with the expected S/Ns (the same
+  headers as in Checker are recognized, section 15).
+- NO LIST: until you load one, the app shows a yellow alert and does not
+  record anything you scan.
+- VALID S/N: it goes on the pallet as usual.
+- DUPLICATE S/N: it comes in blue, as always.
+- S/N NOT IN THE LIST: it is not recorded and "S/N NOT VALID FOR THE
+  PALLET" appears in red, with the error sound.
+- LEFT: the counter shows "Validated X of Y · Z left".
+- A/B/U ALTERNATIVES: with Validate list on, this box also appears, with
+  the same rule as in Checker (section 5).
+- RACK MODE: Rack mode only places machines and does not validate, so
+  each option locks the other (grey): while Rack mode is on, "Validate
+  list" cannot be ticked, and while Validate list is on, "Rack mode"
+  cannot be ticked.
+
+
+13. RACK MODE
 -------------
 
 To store items in racks, location by location. It is turned on with the
@@ -7812,7 +8549,7 @@ To store items in racks, location by location. It is turned on with the
   (x,y), X, Y, S/N and whether it is a duplicate.
 
 
-13. PRINT AND BIG VIEW
+14. PRINT AND BIG VIEW
 ----------------------
 
 PRINT ("Print" button or Ctrl+P): the app asks in the yellow alert what
@@ -7827,7 +8564,7 @@ BIG VIEW (F11): only the counter and the last result in large size, to
 see them from a distance. You can keep scanning. F11 or Esc to go back.
 
 
-14. SUPPORTED FILES AND HEADERS
+15. SUPPORTED FILES AND HEADERS
 -------------------------------
 
 Formats:
@@ -7855,7 +8592,7 @@ Reading rules:
 - Numbers are read without decimals (123456.0 is read as 123456).
 
 
-15. SHORTCUTS, RESET AND SESSION
+16. SHORTCUTS, RESET AND SESSION
 --------------------------------
 
 Keyboard shortcuts:
@@ -7865,6 +8602,7 @@ Keyboard shortcuts:
     Ctrl+E       export
     Ctrl+P       print
     Ctrl+V       paste several S/Ns
+    Ctrl+C       copy the S/N selected in Pending or Extras
     F11          big view
     Esc          dismiss the alert / leave the big view
     F2           next pallet or new rack (Create list)
@@ -7882,7 +8620,7 @@ and the list or racks being created. Even so, export the report before
 resetting.
 
 
-16. REQUIREMENTS AND INSTALLATION
+17. REQUIREMENTS AND INSTALLATION
 ---------------------------------
 
 EXECUTABLE (recommended):
@@ -7905,11 +8643,11 @@ FROM THE CODE (optional):
 Sounds work on Windows. The app icon is arthur.ico.
 
 
-17. RECOMMENDATIONS
+18. RECOMMENDATIONS
 -------------------
 
 - Make sure the loaded file is the right one.
-- Check that the S/N columns have a recognized header (section 14).
+- Check that the S/N columns have a recognized header (section 15).
 - Remember that all the sheets of XLSX files are read.
 - If an S/N does not appear as found, check that it is written correctly
   and that it exists in an S/N column.
@@ -7918,10 +8656,10 @@ Sounds work on Windows. The app icon is arthur.ico.
 - Keep an unmodified copy of the original file.
 
 
-18. CONTACT
------------
+19. GitHub
+----------
 
-Project, updates and downloads on GitHub:
+Project, updates and downloads:
 
     https://github.com/Desblackve/serial-number-checker
 
@@ -7935,7 +8673,7 @@ Contato: desblackve@gmail.com
 SERIAL NUMBER CHECKER
 =====================
 
-Versão 2.0
+Versão 2.1A
 
 
 1. O QUE O APLICATIVO FAZ
@@ -8009,14 +8747,40 @@ EXEMPLO 5 - Preencher um rack posição por posição (Modo Rack)
      completado". Clique em "Adicionar novo rack" para seguir com o
      DC05-2.
 
-EXEMPLO 6 - Ver o avanço de longe
+EXEMPLO 6 - Conferir se cada S/N vai no pallet certo
+
+  1. Em "Criar lista S/N", marque "Validar lista" e clique em "Carregar
+     lista" para escolher o CSV ou Excel com os S/N que devem ir nos
+     pallets.
+  2. Escaneie normalmente. Se um S/N não estiver nessa lista, ele não é
+     registrado e aparece em vermelho "S/N NÃO VÁLIDO PARA O PALLET".
+  3. O contador mostra quantos já foram e quantos faltam, por exemplo
+     "Validados 45 de 60 · faltam 15".
+
+EXEMPLO 7 - Ver o avanço de longe
 
   Pressione F11 (ou "Visão ampliada"): a tela mostra apenas o contador e
   o resultado em tamanho grande. F11 ou Esc para voltar.
 
 
-3. NOVIDADES DA VERSÃO 2.0
---------------------------
+3. NOVIDADES
+------------
+
+VERSÃO 2.1A - Validar lista e nomes de planilha
+
+- Validar lista (Criar lista): só são registrados os S/N de uma lista
+  carregada; os outros recebem um aviso em vermelho e não entram.
+- Com Validar lista também é possível usar "Alternativas A/B/U".
+- A primeira planilha se chama "Pallet 1" e qualquer planilha pode ser
+  renomeada com um clique duplo na aba.
+- Uma descrição curta aparece ao passar o mouse sobre "Modo Rack",
+  "Validar lista" e as abas de planilhas.
+- Ao exportar para Excel, as colunas saem com a largura exata para o S/N
+  mais longo.
+- Checker: copiar o S/N pendente com Ctrl+C ou com o botão direito →
+  "Copiar S/N".
+
+VERSÃO 2.0 - Design novo e Modo Rack
 
 - Design novo: cartões escuros sobre um fundo de linhas, botões com
   ícones e barra de título escura no Windows.
@@ -8043,7 +8807,7 @@ EXEMPLO 6 - Ver o avanço de longe
   atual / todas as planilhas (Criar lista).
 - Criar lista: botão "Nova planilha", colunas que podem ser esticadas e
   tecla Backspace para excluir o registro selecionado.
-- Mais cabeçalhos de S/N são reconhecidos (ver seção 14).
+- Mais cabeçalhos de S/N são reconhecidos (ver seção 15).
 - A sessão é salva sozinha: ao abrir o aplicativo de novo, você continua
   de onde parou.
 
@@ -8063,7 +8827,7 @@ EXEMPLO 6 - Ver o avanço de longe
      possível pressionar ENTER.
   8. Repita com todos os S/N que quiser verificar.
   9. No final, clique em "Exportar relatório".
-  10. Para começar do zero, use o botão "Reiniciar" (seção 15).
+  10. Para começar do zero, use o botão "Reiniciar" (seção 16).
 
 A caixa "Alternativas A/B/U" da barra superior liga ou desliga a busca
 alternativa da seção 5.
@@ -8137,6 +8901,8 @@ O contador mostra os S/N encontrados em relação ao total de S/N únicos:
 - PENDENTES: os S/N do arquivo que ainda faltam escanear.
 - SOBRAS: os S/N escaneados que não estão no arquivo, com quantas vezes
   foram lidos e a hora da primeira leitura.
+- COPIAR: selecione um S/N em Pendentes ou Sobras e pressione Ctrl+C, ou
+  clique nele com o botão direito e escolha "Copiar S/N".
 - BUSCAR: filtra a aba aberta enquanto você digita. Enter ou Esc
   devolvem o cursor ao campo de leitura.
 
@@ -8170,6 +8936,7 @@ resultado.
 - Se o arquivo carregado for XLSX, o relatório mantém suas planilhas.
 - Se for CSV, é criado um XLSX para poder colorir as células.
 - As colunas de S/N são coloridas de verde, vermelho ou azul (seção 6).
+- As colunas de S/N saem com a largura exata para o S/N mais longo.
 - São adicionadas três planilhas:
     Resumo       arquivo, totais, encontrados, pendentes, sobras e as
                  horas da primeira e da última leitura.
@@ -8198,6 +8965,11 @@ qualquer texto (sem mudar maiúsculas nem limitar o tamanho).
 - "Próximo pallet" (F2): começa o pallet seguinte.
 - "Nova planilha" (ao lado das abas de planilhas): cria uma planilha
   nova e vai para ela.
+- NOME DAS PLANILHAS: a primeira se chama "Pallet 1". Clique duas vezes
+  na aba de qualquer planilha para renomeá-la (Enter para salvar, Esc
+  para cancelar). O nome novo é usado ao exportar e imprimir.
+- VALIDAR LISTA: confere se cada S/N está em uma lista carregada (seção
+  12).
 - VISOR: mostra a planilha exatamente como será exportada. Clique para
   selecionar uma célula, clique duas vezes para editá-la. As colunas são
   esticadas arrastando sua borda na linha de letras; clique duas vezes na
@@ -8208,11 +8980,35 @@ qualquer texto (sem mudar maiúsculas nem limitar o tamanho).
   apaga o registro selecionado. "Desfazer" (Ctrl+Z) o recupera.
 - EXPORTAR LISTA (Ctrl+E): para Excel (com as mesmas planilhas e cores
   do visor) ou para CSV (S/N, pallet, planilha, célula e se é
-  duplicado).
+  duplicado). No Excel as colunas saem com a largura exata para o S/N
+  mais longo; um CSV não guarda larguras de coluna.
 - Um valor que começa com "=" é salvo como texto, não como fórmula.
 
 
-12. MODO RACK
+12. VALIDAR LISTA
+-----------------
+
+Para garantir que nos pallets só entrem os S/N corretos. É ativado com a
+caixa "Validar lista" na barra superior do modo Criar lista.
+
+- CARREGAR LISTA: escolha um CSV ou Excel com os S/N esperados (são
+  reconhecidos os mesmos cabeçalhos do Checker, seção 15).
+- SEM LISTA: enquanto não carregar uma, o aplicativo mostra um aviso
+  amarelo e não registra nada do que for escaneado.
+- S/N VÁLIDO: entra no pallet normalmente.
+- S/N DUPLICADO: entra em azul, como sempre.
+- S/N QUE NÃO ESTÁ NA LISTA: não é registrado e aparece em vermelho "S/N
+  NÃO VÁLIDO PARA O PALLET", com o som de erro.
+- FALTAM: o contador mostra "Validados X de Y · faltam Z".
+- ALTERNATIVAS A/B/U: com Validar lista ativo, esta caixa também aparece,
+  com a mesma regra do Checker (seção 5).
+- MODO RACK: o Modo Rack só coloca máquinas e não valida, então uma
+  opção bloqueia a outra (cinza): com o Modo Rack ativo não é possível
+  marcar "Validar lista", e com Validar lista ativo não é possível marcar
+  "Modo Rack".
+
+
+13. MODO RACK
 -------------
 
 Para guardar equipamentos em racks, posição por posição. É ativado com a
@@ -8239,7 +9035,7 @@ caixa "Modo Rack" na barra superior do modo Criar lista.
   Rack, Posição (x,y), X, Y, S/N e se é duplicado.
 
 
-13. IMPRIMIR E VISÃO AMPLIADA
+14. IMPRIMIR E VISÃO AMPLIADA
 -----------------------------
 
 IMPRIMIR (botão "Imprimir" ou Ctrl+P): o aplicativo pergunta no aviso
@@ -8255,7 +9051,7 @@ grande, para vê-los de longe. É possível continuar escaneando. F11 ou
 Esc para voltar.
 
 
-14. ARQUIVOS COMPATÍVEIS E CABEÇALHOS
+15. ARQUIVOS COMPATÍVEIS E CABEÇALHOS
 -------------------------------------
 
 Formatos:
@@ -8285,7 +9081,7 @@ Regras de leitura:
 - Os números são lidos sem decimais (123456.0 é lido como 123456).
 
 
-15. ATALHOS, REINÍCIO E SESSÃO
+16. ATALHOS, REINÍCIO E SESSÃO
 ------------------------------
 
 Atalhos de teclado:
@@ -8295,6 +9091,7 @@ Atalhos de teclado:
     Ctrl+E       exportar
     Ctrl+P       imprimir
     Ctrl+V       colar vários S/N
+    Ctrl+C       copiar o S/N selecionado em Pendentes ou Sobras
     F11          visão ampliada
     Esc          ocultar o aviso / sair da visão ampliada
     F2           próximo pallet ou novo rack (Criar lista)
@@ -8312,7 +9109,7 @@ lista ou os racks em criação. Mesmo assim, exporte o relatório antes de
 reiniciar.
 
 
-16. REQUISITOS E INSTALAÇÃO
+17. REQUISITOS E INSTALAÇÃO
 ---------------------------
 
 EXECUTÁVEL (recomendado):
@@ -8336,11 +9133,11 @@ A PARTIR DO CÓDIGO (opcional):
 Os sons funcionam no Windows. O ícone do aplicativo é arthur.ico.
 
 
-17. RECOMENDAÇÕES
+18. RECOMENDAÇÕES
 -----------------
 
 - Verifique se o arquivo carregado é o correto.
-- Confira se as colunas de S/N têm um cabeçalho reconhecido (seção 14).
+- Confira se as colunas de S/N têm um cabeçalho reconhecido (seção 15).
 - Lembre-se de que todas as planilhas dos arquivos XLSX são lidas.
 - Se um S/N não aparecer como encontrado, verifique se está escrito
   corretamente e se existe em uma coluna de S/N.
@@ -8349,10 +9146,10 @@ Os sons funcionam no Windows. O ícone do aplicativo é arthur.ico.
 - Guarde uma cópia do arquivo original sem modificações.
 
 
-18. CONTATO
------------
+19. GitHub
+----------
 
-Projeto, novidades e downloads no GitHub:
+Projeto, novidades e downloads:
 
     https://github.com/Desblackve/serial-number-checker
 
